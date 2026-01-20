@@ -6,23 +6,29 @@ import UserDashboard from './pages/UserDashboard';
 import AdminPanel from './pages/AdminPanel';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 
+import { CartProvider } from './contexts/CartContext';
+import CartPage from './pages/CartPage';
+
 function App() {
     return (
         <AuthProvider>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/dashboard" element={<UserDashboard />} />
-                    <Route
-                        path="/admin"
-                        element={
-                            <ProtectedAdminRoute>
-                                <AdminPanel />
-                            </ProtectedAdminRoute>
-                        }
-                    />
-                </Routes>
-            </Router>
+            <CartProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/cart" element={<CartPage />} />
+                        <Route path="/dashboard" element={<UserDashboard />} />
+                        <Route
+                            path="/admin"
+                            element={
+                                <ProtectedAdminRoute>
+                                    <AdminPanel />
+                                </ProtectedAdminRoute>
+                            }
+                        />
+                    </Routes>
+                </Router>
+            </CartProvider>
         </AuthProvider>
     );
 }

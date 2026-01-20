@@ -5,6 +5,8 @@ import { db, storage } from '../firebase';
 import { collection, addDoc, getDocs, query, orderBy, where, doc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { ShoppingBag, Package, Truck, CheckCircle, Plus, LogOut, ChevronDown, ChevronUp, Scale, Clock, X, Calendar, CreditCard, Upload, DollarSign, FileText } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { EMAILJS_CONFIG } from '../config/emailConfig';
 
 export default function UserDashboard() {
     const { currentUser, logout } = useAuth();
@@ -116,6 +118,9 @@ export default function UserDashboard() {
 
             const docRef = await addDoc(collection(db, 'appointments'), nuevaCitaData);
 
+            // Enviar correo de confirmación
+            await sendEmailConfirmacion(nuevaCitaData);
+
             // ACTUALIZACIÓN CRÍTICA: Eliminar los horarios reservados de la disponibilidad
             // Esto "bloquea" las horas para que nadie más pueda elegirlas
             const fechaDocRef = doc(db, 'available_dates', fechaSeleccionada.id);
@@ -149,6 +154,42 @@ export default function UserDashboard() {
             alert('Error al agendar la cita');
         }
     };
+
+    const sendEmailConfirmacion = async (citaData) => {
+        try {
+            const templateParams = {
+                asunto: 'Cita Agendada - Georgina Personal Shopper',
+                titulo: 'GEORGINA PERSONAL SHOPPER',
+                user_name: citaData.userName,
+                user_email: citaData.userEmail,
+                mensaje_principal: '¡Tu cita ha sido agendada exitosamente! A continuación encontrarás todos los detalles.',
+                fecha: new Date(citaData.fecha).toLocaleDateString('es-ES', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }),
+                horarios: citaData.horario,
+                tienda: citaData.tienda,
+                total: `$${citaData.totalEstimado || '0.00'}`,
+                estado: 'Pendiente de Pago',
+                mostrar_pago: '',
+                mostrar_confirmacion: 'display:none'
+            };
+
+            await emailjs.send(
+                EMAILJS_CONFIG.SERVICE_ID,
+                EMAILJS_CONFIG.TEMPLATE_ID,
+                templateParams,
+                EMAILJS_CONFIG.PUBLIC_KEY
+            );
+
+            console.log('Correo de confirmación enviado exitosamente');
+        } catch (error) {
+            console.error('Error enviando correo de confirmación:', error);
+        }
+    };
+
 
     const handleLogout = async () => {
         await logout();

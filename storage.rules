@@ -24,9 +24,37 @@ service firebase.storage {
     // NUEVA REGLA: Carpeta de comprobantes de citas
     match /comprobantes/{userId}/{allPaths=**} {
       // Admin y dueño pueden leer
-      allow read: if request.auth != null && (request.auth.uid == userId || request.auth.token.email == 'luisuf@gmail.com');
+      allow read: if request.auth != null && (
+        request.auth.uid == userId || 
+        request.auth.token.email == 'luisuf@gmail.com' ||
+        request.auth.token.email == 'ueservicesllc1@gmail.com'
+      );
       // Solo el dueño puede escribir
       allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Carpeta de imágenes del carrusel
+    match /carousel/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && (
+        request.auth.token.email == 'luisuf@gmail.com' || 
+        request.auth.token.email == 'ueservicesllc1@gmail.com'
+      );
+    }
+
+    // Carpeta de imágenes de productos destacados
+    match /featured/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && (
+        request.auth.token.email == 'luisuf@gmail.com' || 
+        request.auth.token.email == 'ueservicesllc1@gmail.com'
+      );
+    }
+
+    // Carpeta de imágenes de la tienda online
+    match /store/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
     }
   }
 }
