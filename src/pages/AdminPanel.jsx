@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { db, storage } from '../firebase';
 import { inventoryDb } from '../firebaseInventory';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, getDocs, query, orderBy, setDoc, where } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, getDocs, query, orderBy, setDoc, where, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Calendar, ShoppingBag, LogOut, Plus, Trash2, X, Clock, ExternalLink, FileText, CheckCircle, Upload, Image, Star, Database, ArrowRightLeft } from 'lucide-react';
 import emailjs from '@emailjs/browser';
@@ -261,7 +261,6 @@ export default function AdminPanel() {
 
             // 6. Configuración SITE_GLOBAL (Georgina DB)
             try {
-                const { doc, getDoc } = await import('firebase/firestore');
                 const settingsRef = doc(db, 'site_settings', 'site_global');
                 const settingsSnap = await getDoc(settingsRef);
                 if (settingsSnap.exists()) {
@@ -624,7 +623,6 @@ export default function AdminPanel() {
         try {
             setSavingSettings(true);
             console.log('--- Iniciando Guardado de Configuración ---');
-            const { doc, setDoc } = await import('firebase/firestore');
 
             const settingsRef = doc(db, 'site_settings', 'site_global');
 

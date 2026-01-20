@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { db, storage } from '../firebase';
-import { collection, addDoc, getDocs, query, orderBy, where, doc, updateDoc, arrayRemove } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, orderBy, where, doc, updateDoc, arrayRemove, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { ShoppingBag, Package, Truck, CheckCircle, Plus, LogOut, ChevronDown, ChevronUp, Scale, Clock, X, Calendar, CreditCard, Upload, DollarSign, FileText } from 'lucide-react';
 import emailjs from '@emailjs/browser';
@@ -68,7 +68,6 @@ export default function UserDashboard() {
                 setCompras(misCompras);
 
                 // 4. Cargar Configuración (Resiliente: site_global o cualquier documento)
-                const { doc, getDoc, getDocs, collection } = await import('firebase/firestore');
                 const settingsRef = doc(db, 'site_settings', 'site_global');
                 const settingsSnap = await getDoc(settingsRef);
 

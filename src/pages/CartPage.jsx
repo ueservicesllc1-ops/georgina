@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { Trash2, Plus, Minus, ArrowRight, ArrowLeft, ShoppingBag } from 'lucide-react';
+import { db } from '../firebase';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 
 export default function CartPage() {
     const {
@@ -22,12 +24,8 @@ export default function CartPage() {
 
     // Cargar Configuración
     React.useEffect(() => {
-        const { collection, getDocs } = import('firebase/firestore');
-        const { db } = import('../firebase');
-
         const loadSettings = async () => {
             try {
-                const { doc, getDoc, getDocs, collection } = await import('firebase/firestore');
                 const settingsRef = doc(db, 'site_settings', 'site_global');
                 const settingsSnap = await getDoc(settingsRef);
 

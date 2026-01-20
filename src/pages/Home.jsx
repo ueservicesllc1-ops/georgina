@@ -6,7 +6,7 @@ import { useCart } from '../contexts/CartContext';
 import LoginModal from '../components/LoginModal';
 import { db } from '../firebase';
 import { inventoryDb } from '../firebaseInventory';
-import { collection, getDocs, query, orderBy, limit, where } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, limit, where, doc, getDoc } from 'firebase/firestore';
 
 export default function Home() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -81,7 +81,6 @@ export default function Home() {
                 setFeaturedProducts(featured);
 
                 // Cargar Configuración (Resiliente)
-                const { doc, getDoc, getDocs, collection } = await import('firebase/firestore');
                 const settingsRef = doc(db, 'site_settings', 'site_global');
                 const settingsSnap = await getDoc(settingsRef);
 
