@@ -67,12 +67,19 @@ export default function UserDashboard() {
                 });
                 setCompras(misCompras);
 
-                // 4. Cargar Configuración (Documento fijo)
-                const { doc, getDoc } = await import('firebase/firestore');
+                // 4. Cargar Configuración (Resiliente: site_global o cualquier documento)
+                const { doc, getDoc, getDocs, collection } = await import('firebase/firestore');
                 const settingsRef = doc(db, 'site_settings', 'site_global');
                 const settingsSnap = await getDoc(settingsRef);
+
                 if (settingsSnap.exists()) {
                     setSettings(settingsSnap.data());
+                } else {
+                    // Si no existe site_global, buscamos el primer documento que haya
+                    const snapFallback = await getDocs(collection(db, 'site_settings'));
+                    if (!snapFallback.empty) {
+                        setSettings(snapFallback.docs[0].data());
+                    }
                 }
 
             } catch (error) {

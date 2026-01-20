@@ -80,12 +80,18 @@ export default function Home() {
                 snapshotFeatured.forEach((doc) => featured.push({ id: doc.id, ...doc.data() }));
                 setFeaturedProducts(featured);
 
-                // Cargar Configuración (Banco y Redes) - Usando documento fijo
-                const { doc, getDoc } = await import('firebase/firestore');
+                // Cargar Configuración (Resiliente)
+                const { doc, getDoc, getDocs, collection } = await import('firebase/firestore');
                 const settingsRef = doc(db, 'site_settings', 'site_global');
                 const settingsSnap = await getDoc(settingsRef);
+
                 if (settingsSnap.exists()) {
                     setSettings(settingsSnap.data());
+                } else {
+                    const snapFallback = await getDocs(collection(db, 'site_settings'));
+                    if (!snapFallback.empty) {
+                        setSettings(snapFallback.docs[0].data());
+                    }
                 }
 
                 // Helper para procesar snapshots de diferentes colecciones

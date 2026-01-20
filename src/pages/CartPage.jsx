@@ -27,12 +27,17 @@ export default function CartPage() {
 
         const loadSettings = async () => {
             try {
-                const { db } = await import('../firebase');
-                const { doc, getDoc } = await import('firebase/firestore');
+                const { doc, getDoc, getDocs, collection } = await import('firebase/firestore');
                 const settingsRef = doc(db, 'site_settings', 'site_global');
                 const settingsSnap = await getDoc(settingsRef);
+
                 if (settingsSnap.exists()) {
                     setSettings(settingsSnap.data());
+                } else {
+                    const snapFallback = await getDocs(collection(db, 'site_settings'));
+                    if (!snapFallback.empty) {
+                        setSettings(snapFallback.docs[0].data());
+                    }
                 }
             } catch (e) {
                 console.error("Error loading settings:", e);
