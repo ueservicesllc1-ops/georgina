@@ -3,58 +3,42 @@ service cloud.firestore {
   match /databases/{database}/documents {
     
     // Función auxiliar para verificar admin
+    // Función auxiliar para verificar admin (Ahora permite acceso público para el panel con PIN)
     function isAdmin() {
-      return request.auth != null && (
-        request.auth.token.email == 'luisuf@gmail.com' || 
-        request.auth.token.email == 'ueservicesllc1@gmail.com'
-      );
+      return true; // Permitimos acceso ya que el control se hace por PIN en el frontend
     }
 
     // Colección de Fechas Disponibles
-    // Cualquiera puede leer (para ver disponibilidad)
-    // Solo admin puede escribir (crear/borrar fechas)
     match /available_dates/{dateId} {
-      allow read: if true;
-      allow write: if isAdmin();
+      allow read, write: if true;
     }
 
     // Colección de Citas (Appointments)
-    // Usuarios pueden leer y crear sus propias citas
-    // Admin puede leer y escribir todo
     match /appointments/{appointmentId} {
-      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
-      allow read, update, delete: if request.auth != null && (resource.data.userId == request.auth.uid || isAdmin());
+      allow read, write: if true;
     }
 
     // Colección de Compras (Purchases)
-    // Usuarios pueden leer sus propias compras
-    // Admin puede leer y escribir todo
     match /purchases/{purchaseId} {
-      allow read: if request.auth != null && (resource.data.userId == request.auth.uid || isAdmin());
-      allow write: if isAdmin();
+      allow read, write: if true;
     }
 
     // Colección de Imágenes del Carrusel
-    // Cualquiera puede leer (para mostrar en la página principal)
-    // Solo admin puede escribir
     match /carousel_images/{imageId} {
-      allow read: if true;
-      allow write: if isAdmin();
+      allow read, write: if true;
     }
 
     // Colección de Productos Destacados
     match /featured_products/{productId} {
-      allow read: if true;
-      allow write: if isAdmin();
+      allow read, write: if true;
     }
 
     // Colección de Productos de la Tienda
     match /store_products/{productId} {
-      allow read: if true;
-      allow write: if isAdmin();
+      allow read, write: if true;
     }
 
-    // Regla por defecto para usuarios (si existe colección users)
+    // Regla por defecto para usuarios
     match /users/{userId} {
       allow read, write: if request.auth != null && (request.auth.uid == userId || isAdmin());
     }

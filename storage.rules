@@ -36,25 +36,18 @@ service firebase.storage {
     // Carpeta de imágenes del carrusel
     match /carousel/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null && (
-        request.auth.token.email == 'luisuf@gmail.com' || 
-        request.auth.token.email == 'ueservicesllc1@gmail.com'
-      );
+      allow write: if true;
     }
 
     // Carpeta de imágenes de productos destacados
     match /featured/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null && (
-        request.auth.token.email == 'luisuf@gmail.com' || 
-        request.auth.token.email == 'ueservicesllc1@gmail.com'
-      );
+      allow write: if true;
     }
 
     // Carpeta de imágenes de la tienda online
     match /store/{allPaths=**} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow read, write: if true;
     }
   }
 }

@@ -11,8 +11,10 @@ import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG } from '../config/emailConfig';
 
 export default function AdminPanel() {
-    const { currentUser, logout } = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
+    const [authorized, setAuthorized] = useState(() => sessionStorage.getItem('admin_authorized') === 'true');
+    const [pinInput, setPinInput] = useState('');
     const [fechasDisponibles, setFechasDisponibles] = useState([]);
     const [citasAgendadas, setCitasAgendadas] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -71,8 +73,21 @@ export default function AdminPanel() {
     ];
 
     useEffect(() => {
-        cargarDatos();
-    }, []);
+        if (authorized) {
+            cargarDatos();
+        }
+    }, [authorized]);
+
+    const handlePinSubmit = (e) => {
+        e.preventDefault();
+        if (pinInput === '1619') {
+            setAuthorized(true);
+            sessionStorage.setItem('admin_authorized', 'true');
+        } else {
+            alert('PIN Incorrecto');
+            setPinInput('');
+        }
+    };
 
     // GESTIÓN DE ESTADOS DE PEDIDOS
     const handleOrderStatus = async (orderId, newStatus, currentOrder) => {
@@ -150,8 +165,8 @@ export default function AdminPanel() {
             snapshotFechas.forEach((doc) => fechas.push({ id: doc.id, ...doc.data() }));
             setFechasDisponibles(fechas);
 
-            // Cargar Citas Agendadas (Solo si es admin)
-            if (currentUser.email === 'luisuf@gmail.com' || currentUser.email === 'ueservicesllc1@gmail.com') {
+            // Cargar Citas Agendadas (Solo si está autorizado)
+            if (authorized) {
                 const qCitas = query(collection(db, 'appointments'), orderBy('createdAt', 'desc'));
                 const snapshotCitas = await getDocs(qCitas);
                 const citas = [];
@@ -276,7 +291,7 @@ export default function AdminPanel() {
                 tienda: nuevaFecha.tienda,
                 horarios: nuevaFecha.horarios,
                 createdAt: new Date(),
-                createdBy: currentUser.email
+                createdBy: 'admin_pin'
             });
 
             alert('Fecha agregada exitosamente');
@@ -585,9 +600,46 @@ export default function AdminPanel() {
     };
 
     const handleLogout = async () => {
-        await logout();
-        navigate('/');
+        sessionStorage.removeItem('admin_authorized');
+        setAuthorized(false);
     };
+
+    if (!authorized) {
+        return (
+            <div className="min-h-screen bg-stone-950 flex items-center justify-center p-6">
+                <div className="max-w-md w-full bg-stone-900 border border-amber-600/30 rounded-2xl p-8 shadow-2xl">
+                    <div className="text-center mb-8">
+                        <div className="bg-amber-600/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-600/20">
+                            <Database className="text-amber-500" size={40} />
+                        </div>
+                        <h2 className="text-3xl font-serif text-amber-100 mb-2">Acceso Admin</h2>
+                        <p className="text-stone-400">Ingresa el PIN para gestionar la tienda</p>
+                    </div>
+
+                    <form onSubmit={handlePinSubmit} className="space-y-6">
+                        <div>
+                            <input
+                                type="password"
+                                value={pinInput}
+                                onChange={(e) => setPinInput(e.target.value)}
+                                placeholder="Ingresa PIN de 4 dígitos"
+                                className="w-full bg-stone-800 border-2 border-stone-700 rounded-xl px-4 py-4 text-center text-3xl tracking-[0.5em] text-amber-500 focus:outline-none focus:border-amber-600 transition-all font-mono"
+                                maxLength={4}
+                                autoFocus
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-bold py-4 rounded-xl hover:from-amber-500 hover:to-amber-600 transition-all transform active:scale-95 shadow-lg flex items-center justify-center gap-2"
+                        >
+                            <CheckCircle size={20} />
+                            ENTRAR AL PANEL
+                        </button>
+                    </form>
+                </div>
+            </div>
+        );
+    }
 
     if (loading) {
         return (
@@ -613,7 +665,7 @@ export default function AdminPanel() {
 
                         <div className="flex items-center gap-4">
                             <span className="text-sm text-stone-400">
-                                👑 {currentUser?.email}
+                                👑 Administrador (PIN)
                             </span>
                             <button
                                 onClick={handleLogout}
