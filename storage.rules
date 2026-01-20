@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Carpeta de imágenes de productos
+    match /product-images/{userId}/{imageId} {
+      allow read: if true; 
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Carpeta de comprobantes de compra
+    match /purchase-receipts/{userId}/{receiptId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Carpeta de avatares de usuario
+    match /avatars/{userId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // NUEVA REGLA: Carpeta de comprobantes de citas
+    match /comprobantes/{userId}/{allPaths=**} {
+      // Admin y dueño pueden leer
+      allow read: if request.auth != null && (request.auth.uid == userId || request.auth.token.email == 'luisuf@gmail.com');
+      // Solo el dueño puede escribir
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
