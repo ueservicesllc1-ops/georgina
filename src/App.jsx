@@ -18,14 +18,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/cart" element={<CartPage />} />
                         <Route path="/dashboard" element={<UserDashboard />} />
-                        <Route
-                            path="/admin"
-                            element={
-                                <ProtectedAdminRoute>
-                                    <AdminPanel />
-                                </ProtectedAdminRoute>
-                            }
-                        />
+                        <Route path="/admin" element={<AdminPanel />} />
                     </Routes>
                 </Router>
             </CartProvider>

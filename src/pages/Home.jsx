@@ -13,6 +13,14 @@ export default function Home() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [loginModalOpen, setLoginModalOpen] = useState(false);
     const [carouselImages, setCarouselImages] = useState([]);
+    const [settings, setSettings] = useState({
+        social: {
+            whatsapp: '15513019412',
+            instagram: '#',
+            tiktok: '#',
+            facebook: '#'
+        }
+    });
     const { currentUser } = useAuth();
     const { addToCart, getCartCount, toggleCart } = useCart();
     const navigate = useNavigate();
@@ -71,6 +79,14 @@ export default function Home() {
                 const featured = [];
                 snapshotFeatured.forEach((doc) => featured.push({ id: doc.id, ...doc.data() }));
                 setFeaturedProducts(featured);
+
+                // Cargar Configuración (Banco y Redes) - Usando documento fijo
+                const { doc, getDoc } = await import('firebase/firestore');
+                const settingsRef = doc(db, 'site_settings', 'site_global');
+                const settingsSnap = await getDoc(settingsRef);
+                if (settingsSnap.exists()) {
+                    setSettings(settingsSnap.data());
+                }
 
                 // Helper para procesar snapshots de diferentes colecciones
                 const processSnapshot = (snapshot, sourceLabel) => {
@@ -732,10 +748,26 @@ export default function Home() {
 
                     <div className="border-t border-stone-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-stone-400">
                         <p>© 2026 Georgina Personal Shopper. Todos los derechos reservados.</p>
+                        <div className="flex gap-4">
+                            {settings.social.instagram && (
+                                <a href={settings.social.instagram} target="_blank" rel="noreferrer" className="bg-white/5 p-2 rounded-full hover:bg-amber-600/20 hover:text-amber-400 transition-all border border-white/5">
+                                    <Instagram size={18} />
+                                </a>
+                            )}
+                            {settings.social.tiktok && (
+                                <a href={settings.social.tiktok} target="_blank" rel="noreferrer" className="bg-white/5 p-2 rounded-full hover:bg-amber-600/20 hover:text-amber-400 transition-all border border-white/5">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                                </a>
+                            )}
+                            {settings.social.facebook && (
+                                <a href={settings.social.facebook} target="_blank" rel="noreferrer" className="bg-white/5 p-2 rounded-full hover:bg-amber-600/20 hover:text-amber-400 transition-all border border-white/5">
+                                    <Facebook size={18} />
+                                </a>
+                            )}
+                        </div>
                         <div className="flex gap-6">
                             <a href="#" className="hover:text-amber-400 transition-colors">Privacidad</a>
                             <a href="#" className="hover:text-amber-400 transition-colors">Términos</a>
-                            <a href="#" className="hover:text-amber-400 transition-colors">Cookies</a>
                         </div>
                     </div>
                 </div>

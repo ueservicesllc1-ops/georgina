@@ -28,6 +28,7 @@ export default function UserDashboard() {
     const [pagoModal, setPagoModal] = useState({ open: false, cita: null, paso: 'seleccion' });
     const [comprobante, setComprobante] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [settings, setSettings] = useState(null);
 
     useEffect(() => {
         const cargarDatos = async () => {
@@ -65,6 +66,14 @@ export default function UserDashboard() {
                     return dateB - dateA;
                 });
                 setCompras(misCompras);
+
+                // 4. Cargar Configuración (Documento fijo)
+                const { doc, getDoc } = await import('firebase/firestore');
+                const settingsRef = doc(db, 'site_settings', 'site_global');
+                const settingsSnap = await getDoc(settingsRef);
+                if (settingsSnap.exists()) {
+                    setSettings(settingsSnap.data());
+                }
 
             } catch (error) {
                 console.error("Error cargando datos:", error);
@@ -682,11 +691,11 @@ export default function UserDashboard() {
                                         <DollarSign size={16} /> Datos Bancarios
                                     </h3>
                                     <div className="space-y-1 text-sm text-stone-300">
-                                        <p><span className="text-stone-500">Banco:</span> Banco Pichincha</p>
-                                        <p><span className="text-stone-500">Tipo:</span> Cuenta de Ahorros</p>
-                                        <p><span className="text-stone-500">Número:</span> 220XXXXXXX</p>
-                                        <p><span className="text-stone-500">Titular:</span> Georgina App</p>
-                                        <p><span className="text-stone-500">Total a pagar:</span> ${pagoModal.cita.totalEstimado || '0.00'}</p>
+                                        <p><span className="text-stone-500">Banco:</span> {settings?.bank?.bankName || 'Banco Pichincha'}</p>
+                                        <p><span className="text-stone-500">Tipo:</span> {settings?.bank?.accountType || 'Cuenta de Ahorros'}</p>
+                                        <p><span className="text-stone-500">Número:</span> {settings?.bank?.accountNumber || 'Cargando...'}</p>
+                                        <p><span className="text-stone-500">Titular:</span> {settings?.bank?.name || 'Cargando...'}</p>
+                                        <p><span className="text-stone-500 font-bold">Total a pagar:</span> <span className="text-amber-400 font-bold text-lg">${pagoModal.cita.totalEstimado || '0.00'}</span></p>
                                     </div>
                                 </div>
 

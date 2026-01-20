@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { db, storage } from '../firebase';
 import { inventoryDb } from '../firebaseInventory';
@@ -11,7 +10,6 @@ import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG } from '../config/emailConfig';
 
 export default function AdminPanel() {
-    const { logout } = useAuth();
     const navigate = useNavigate();
     const [authorized, setAuthorized] = useState(() => sessionStorage.getItem('admin_authorized') === 'true');
     const [pinInput, setPinInput] = useState('');
@@ -60,6 +58,23 @@ export default function AdminPanel() {
         category: 'Ropa',
         weight: ''
     });
+
+    // Estados para Configuración (Banco y Redes)
+    const [settings, setSettings] = useState({
+        bank: {
+            name: '',
+            accountType: 'Ahorros', // 'Ahorros' o 'Corriente'
+            accountNumber: '',
+            bankName: 'Banco Pichincha'
+        },
+        social: {
+            instagram: '',
+            tiktok: '',
+            whatsapp: '15513019412',
+            facebook: ''
+        }
+    });
+    const [savingSettings, setSavingSettings] = useState(false);
 
     const categoriasTienda = ['Ropa', 'Zapatos', 'Perfumes', 'Electrónico', 'Vitaminas', 'Juguetes', 'Otros'];
 
@@ -156,60 +171,60 @@ export default function AdminPanel() {
     };
 
     const cargarDatos = async () => {
+        setLoading(true);
+        console.log('--- Iniciando Carga de Datos Resiliente ---');
+
+        // 1. Cargar Fechas disponibles (Georgina DB)
         try {
-            setLoading(true);
-            // Cargar Fechas disponibles
             const qFechas = query(collection(db, 'available_dates'), orderBy('fecha', 'asc'));
             const snapshotFechas = await getDocs(qFechas);
-            const fechas = [];
-            snapshotFechas.forEach((doc) => fechas.push({ id: doc.id, ...doc.data() }));
+            const fechas = snapshotFechas.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setFechasDisponibles(fechas);
+            console.log('✅ Fechas cargadas');
+        } catch (e) {
+            console.error('❌ Error en fechas:', e.message);
+        }
 
-            // Cargar Citas Agendadas (Solo si está autorizado)
-            if (authorized) {
+        if (authorized) {
+            // 2. Cargar Citas Agendadas (Georgina DB)
+            try {
                 const qCitas = query(collection(db, 'appointments'), orderBy('createdAt', 'desc'));
                 const snapshotCitas = await getDocs(qCitas);
-                const citas = [];
-                snapshotCitas.forEach((doc) => citas.push({ id: doc.id, ...doc.data() }));
+                const citas = snapshotCitas.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 setCitasAgendadas(citas);
+                console.log('✅ Citas cargadas');
+            } catch (e) {
+                console.error('❌ Error en citas:', e.message);
+            }
 
-                // Cargar imágenes del carrusel
-                const qCarousel = query(collection(db, 'carousel_images'), orderBy('order', 'asc'));
-                const snapshotCarousel = await getDocs(qCarousel);
-                const images = [];
-                snapshotCarousel.forEach((doc) => images.push({ id: doc.id, ...doc.data() }));
-                setCarouselImages(images);
+            // 3. Multimedia (Georgina DB)
+            try {
+                const snapshotCarousel = await getDocs(query(collection(db, 'carousel_images'), orderBy('order', 'asc')));
+                setCarouselImages(snapshotCarousel.docs.map(doc => ({ id: doc.id, ...doc.data() })));
 
-                // Cargar productos destacados
-                const qFeatured = query(collection(db, 'featured_products'), orderBy('createdAt', 'desc'));
-                const snapshotFeatured = await getDocs(qFeatured);
-                const featured = [];
-                snapshotFeatured.forEach((doc) => featured.push({ id: doc.id, ...doc.data() }));
-                setFeaturedProducts(featured);
+                const snapshotFeatured = await getDocs(query(collection(db, 'featured_products'), orderBy('createdAt', 'desc')));
+                setFeaturedProducts(snapshotFeatured.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                console.log('✅ Multimedia cargado');
+            } catch (e) {
+                console.error('❌ Error en multimedia:', e.message);
+            }
 
-                // Cargar productos de la tienda (Desde Inventario Externo)
-                // Helper para procesar snapshots de diferentes colecciones en Admin
+            // 4. Inventario Externo (Envios DB)
+            try {
                 const processSnapshot = (snapshot, sourceLabel) => {
                     const items = [];
                     snapshot.forEach((doc) => {
                         const data = doc.data();
                         const product = data.product || data;
-
                         if (product && (product.name || product.nombre)) {
-                            const weightRaw = parseFloat(product.weight || data.weight || 0);
-                            const weightLbs = weightRaw > 20 ? (weightRaw * 0.00220462) : weightRaw;
-                            const finalPrice = product.salePrice1 || product.unitPrice || product.price || 0;
-
                             const isFBorW = sourceLabel === 'fb' || sourceLabel === 'w';
-                            const finalWeight = isFBorW ? 0.50 : parseFloat(weightLbs.toFixed(2));
-
                             items.push({
                                 ...product,
                                 id: doc.id,
                                 source: sourceLabel,
                                 name: product.name || product.nombre || 'Sin Nombre',
-                                price: finalPrice,
-                                weight: finalWeight,
+                                price: product.salePrice1 || product.unitPrice || product.price || 0,
+                                weight: isFBorW ? 0.50 : (parseFloat(product.weight || 0)),
                                 imageUrl: product.imageUrl || product.image || '',
                                 originalRef: doc.ref
                             });
@@ -218,11 +233,10 @@ export default function AdminPanel() {
                     return items;
                 };
 
-                // Cargar desde múltiples fuentes
                 const [snapInv, snapFB, snapW] = await Promise.all([
-                    getDocs(collection(inventoryDb, 'inventory')),
-                    getDocs(query(collection(inventoryDb, 'products'), where('origin', 'in', ['fivebelow', 'fb']))).catch(() => ({ forEach: () => { } })),
-                    getDocs(query(collection(inventoryDb, 'products'), where('origin', 'in', ['walgreens', 'w']))).catch(() => ({ forEach: () => { } }))
+                    getDocs(collection(inventoryDb, 'inventory')).catch(e => { console.error('Error inventory:', e.message); return { forEach: () => { } }; }),
+                    getDocs(query(collection(inventoryDb, 'products'), where('origin', 'in', ['fivebelow', 'fb']))).catch(e => { console.error('Error FB:', e.message); return { forEach: () => { } }; }),
+                    getDocs(query(collection(inventoryDb, 'products'), where('origin', 'in', ['walgreens', 'w']))).catch(e => { console.error('Error W:', e.message); return { forEach: () => { } }; })
                 ]);
 
                 let allItems = [
@@ -230,29 +244,35 @@ export default function AdminPanel() {
                     ...processSnapshot(snapFB, 'fb'),
                     ...processSnapshot(snapW, 'w')
                 ];
-
-                // Ordenar en cliente ya que 'createdAt' puede no ser consistente en la DB externa
-                allItems.sort((a, b) => {
-                    const dateA = a.createdAt?.seconds ? new Date(a.createdAt.seconds * 1000) : new Date(0);
-                    const dateB = b.createdAt?.seconds ? new Date(b.createdAt.seconds * 1000) : new Date(0);
-                    return dateB - dateA;
-                });
-
                 setStoreProducts(allItems);
-
-                // Cargar Pedidos Online (inventoryDb -> onlineSales)
-                const qOrders = query(collection(inventoryDb, 'onlineSales'), orderBy('createdAt', 'desc'));
-                const snapshotOrders = await getDocs(qOrders);
-                const orders = [];
-                snapshotOrders.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
-                setOnlineOrders(orders);
-
+                console.log('✅ Inventario externo cargado');
+            } catch (e) {
+                console.error('❌ Error en inventario tienda:', e.message);
             }
-        } catch (error) {
-            console.error('Error cargando datos:', error);
-        } finally {
-            setLoading(false);
+
+            // 5. Pedidos (Envios DB)
+            try {
+                const snapshotOrders = await getDocs(query(collection(inventoryDb, 'onlineSales'), orderBy('createdAt', 'desc')));
+                setOnlineOrders(snapshotOrders.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                console.log('✅ Pedidos cargados');
+            } catch (e) {
+                console.error('❌ Error en pedidos:', e.message);
+            }
+
+            // 6. Configuración SITE_GLOBAL (Georgina DB)
+            try {
+                const { doc, getDoc } = await import('firebase/firestore');
+                const settingsRef = doc(db, 'site_settings', 'site_global');
+                const settingsSnap = await getDoc(settingsRef);
+                if (settingsSnap.exists()) {
+                    setSettings({ ...settingsSnap.data(), id: 'site_global' });
+                    console.log('✅ Configuración bancaria cargada');
+                }
+            } catch (e) {
+                console.error('❌ Error en config bancaria:', e.message);
+            }
         }
+        setLoading(false);
     };
 
     const toggleHorario = (horario) => {
@@ -599,6 +619,36 @@ export default function AdminPanel() {
         }
     };
 
+    const handleSaveSettings = async (e) => {
+        e.preventDefault();
+        try {
+            setSavingSettings(true);
+            console.log('--- Iniciando Guardado de Configuración ---');
+            const { doc, setDoc } = await import('firebase/firestore');
+
+            const settingsRef = doc(db, 'site_settings', 'site_global');
+
+            const dataToSave = {
+                bank: settings.bank,
+                social: settings.social,
+                updatedAt: new Date()
+            };
+
+            console.log('Intentando escribir en site_global:', dataToSave);
+
+            await setDoc(settingsRef, dataToSave, { merge: true });
+
+            console.log('✅ ESCRITURA EXITOSA en site_global');
+            alert('Configuración guardada exitosamente');
+            await cargarDatos();
+        } catch (error) {
+            console.error('❌ ERROR AL ESCRIBIR EN FIRESTORE:', error);
+            alert('Error al guardar configuración: ' + error.message);
+        } finally {
+            setSavingSettings(false);
+        }
+    };
+
     const handleLogout = async () => {
         sessionStorage.removeItem('admin_authorized');
         setAuthorized(false);
@@ -724,6 +774,12 @@ export default function AdminPanel() {
                             className={`px-6 py-2 rounded-md text-sm font-semibold transition-all ${subTab === 'pedidos' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
                         >
                             Pedidos Web ({onlineOrders.filter(o => o.status === 'pending').length})
+                        </button>
+                        <button
+                            onClick={() => setSubTab('settings')}
+                            className={`px-6 py-2 rounded-md text-sm font-semibold transition-all ${subTab === 'settings' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
+                        >
+                            Configuración
                         </button>
                     </div>
                 </div>
@@ -1517,6 +1573,109 @@ export default function AdminPanel() {
                             ))
                         )}
                     </div>
+                </div>
+            )}
+
+            {/* VISTA: Configuración */}
+            {subTab === 'settings' && (
+                <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                    <h2 className="text-2xl font-serif text-amber-100 mb-6">Configuración del Sitio</h2>
+
+                    <form onSubmit={handleSaveSettings} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Banco Pichincha */}
+                        <div className="space-y-4 bg-white/5 p-6 rounded-xl border border-white/5">
+                            <h3 className="text-lg font-semibold text-amber-400 border-b border-amber-600/30 pb-2 mb-4 flex items-center gap-2">
+                                <Database size={20} /> Datos Bancarios
+                            </h3>
+                            <div>
+                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Nombre de la Cuenta</label>
+                                <input
+                                    type="text"
+                                    value={settings.bank.name}
+                                    onChange={(e) => setSettings({ ...settings, bank: { ...settings.bank, name: e.target.value } })}
+                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                    placeholder="Ej: Georgina Shopper"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Número de Cuenta</label>
+                                <input
+                                    type="text"
+                                    value={settings.bank.accountNumber}
+                                    onChange={(e) => setSettings({ ...settings, bank: { ...settings.bank, accountNumber: e.target.value } })}
+                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                    placeholder="0000000000"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Tipo de Cuenta</label>
+                                <select
+                                    value={settings.bank.accountType}
+                                    onChange={(e) => setSettings({ ...settings, bank: { ...settings.bank, accountType: e.target.value } })}
+                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                >
+                                    <option value="Ahorros">Ahorros</option>
+                                    <option value="Corriente">Corriente</option>
+                                </select>
+                            </div>
+                            <p className="text-xs text-stone-500 italic">Banco configurado: {settings.bank.bankName}</p>
+                        </div>
+
+                        {/* Redes Sociales */}
+                        <div className="space-y-4 bg-white/5 p-6 rounded-xl border border-white/5">
+                            <h3 className="text-lg font-semibold text-amber-400 border-b border-amber-600/30 pb-2 mb-4 flex items-center gap-2">
+                                <ExternalLink size={20} /> Redes Sociales (Links)
+                            </h3>
+                            <div>
+                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Instagram (URL)</label>
+                                <input
+                                    type="text"
+                                    value={settings.social.instagram}
+                                    onChange={(e) => setSettings({ ...settings, social: { ...settings.social, instagram: e.target.value } })}
+                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">TikTok (URL)</label>
+                                <input
+                                    type="text"
+                                    value={settings.social.tiktok}
+                                    onChange={(e) => setSettings({ ...settings, social: { ...settings.social, tiktok: e.target.value } })}
+                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Facebook (URL)</label>
+                                <input
+                                    type="text"
+                                    value={settings.social.facebook}
+                                    onChange={(e) => setSettings({ ...settings, social: { ...settings.social, facebook: e.target.value } })}
+                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">WhatsApp (Número sin +)</label>
+                                <input
+                                    type="text"
+                                    value={settings.social.whatsapp}
+                                    onChange={(e) => setSettings({ ...settings, social: { ...settings.social, whatsapp: e.target.value } })}
+                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                    placeholder="15513019412"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="md:col-span-2 flex justify-end">
+                            <button
+                                type="submit"
+                                disabled={savingSettings}
+                                className="px-8 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-bold rounded hover:from-amber-500 hover:to-amber-600 transition-all flex items-center gap-2 shadow-lg disabled:opacity-50"
+                            >
+                                {savingSettings ? "Guardando..." : "Guardar Configuración"}
+                                <CheckCircle size={18} />
+                            </button>
+                        </div>
+                    </form>
                 </div>
             )}
         </div>

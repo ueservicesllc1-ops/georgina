@@ -18,6 +18,28 @@ export default function CartPage() {
     const navigate = useNavigate();
     const [customerName, setCustomerName] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
+    const [settings, setSettings] = useState(null);
+
+    // Cargar Configuración
+    React.useEffect(() => {
+        const { collection, getDocs } = import('firebase/firestore');
+        const { db } = import('../firebase');
+
+        const loadSettings = async () => {
+            try {
+                const { db } = await import('../firebase');
+                const { doc, getDoc } = await import('firebase/firestore');
+                const settingsRef = doc(db, 'site_settings', 'site_global');
+                const settingsSnap = await getDoc(settingsRef);
+                if (settingsSnap.exists()) {
+                    setSettings(settingsSnap.data());
+                }
+            } catch (e) {
+                console.error("Error loading settings:", e);
+            }
+        };
+        loadSettings();
+    }, []);
 
     // Cálculos
     const subtotal = getCartTotal();
@@ -51,9 +73,10 @@ export default function CartPage() {
             `▪️ *${item.name}*\n   Cant: ${item.quantity} | Peso: ${item.weight} lbs | Precio: $${item.price}`
         ).join('\n\n');
 
-        const message = `👋 *HOLA GEORGINA!* \nSoy *${customerName}* y deseo confirmar mi pedido web.\n\n🛍️ *DETALLE DEL PEDIDO:*\n----------------------------------\n${itemsList}\n----------------------------------\n\n💰 *Subtotal:* $${subtotal.toFixed(2)}\n📦 *Envío (${weight.toFixed(2)} lbs):* $${shipping.toFixed(2)}\n\n💎 *TOTAL A PAGAR: $${total.toFixed(2)}*\n\n📍 Quedo a la espera de sus datos bancarios.`;
+        const bankInfo = settings?.bank ? `\n\n🏦 *DATOS DE PAGO (${settings.bank.bankName})*\n🔹 *Titular:* ${settings.bank.name}\n🔹 *Tipo:* ${settings.bank.accountType}\n🔹 *Cuenta:* ${settings.bank.accountNumber}` : '';
+        const message = `👋 *HOLA GEORGINA!* \nSoy *${customerName}* y deseo confirmar mi pedido web.\n\n🛍️ *DETALLE DEL PEDIDO:*\n----------------------------------\n${itemsList}\n----------------------------------\n\n💰 *Subtotal:* $${subtotal.toFixed(2)}\n📦 *Envío (${weight.toFixed(2)} lbs):* $${shipping.toFixed(2)}\n\n💎 *TOTAL A PAGAR: $${total.toFixed(2)}*${bankInfo}\n\n📍 Quedo a la espera de la confirmación.`;
 
-        const whatsappUrl = `https://wa.me/15513019412?text=${encodeURIComponent(message)}`;
+        const whatsappUrl = `https://wa.me/${settings?.social?.whatsapp || '15513019412'}?text=${encodeURIComponent(message)}`;
 
         // 3. Redirigir
         window.open(whatsappUrl, '_blank');
@@ -200,9 +223,23 @@ export default function CartPage() {
                                     className="w-full bg-stone-800 border-stone-700 text-white p-3 rounded-lg focus:ring-2 focus:ring-amber-600 outline-none placeholder-stone-600 mb-2"
                                 />
                                 <p className="text-xs text-stone-500">
-                                    * Te contactaremos por WhatsApp para coordinar el pago.
+                                    * Al confirmar, verás los datos bancarios y nos enviaremos un WhatsApp.
                                 </p>
                             </div>
+
+                            {settings?.bank?.accountNumber && (
+                                <div className="mb-6 p-4 bg-amber-600/10 border border-amber-600/30 rounded-xl">
+                                    <h4 className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-1">
+                                        <Database size={14} /> Datos para Transferencia
+                                    </h4>
+                                    <div className="text-sm space-y-1 text-stone-300">
+                                        <p><span className="text-stone-500">Banco:</span> {settings.bank.bankName}</p>
+                                        <p><span className="text-stone-500">Titular:</span> {settings.bank.name}</p>
+                                        <p><span className="text-stone-500">Cuenta:</span> {settings.bank.accountNumber}</p>
+                                        <p><span className="text-stone-500">Tipo:</span> {settings.bank.accountType}</p>
+                                    </div>
+                                </div>
+                            )}
 
                             <button
                                 onClick={handleCheckout}
