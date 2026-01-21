@@ -488,37 +488,39 @@ export default function Home() {
                             return (
                                 <>
                                     {itemsToShow.map((product, index) => (
-                                        <div key={`${product.id}-${index}`} className="group cursor-pointer" onClick={() => openProductModal(product)}>
-                                            <div className="relative aspect-square overflow-hidden rounded-lg mb-3 bg-stone-100 border border-stone-200">
-                                                <img
-                                                    src={product.imageUrl || product.image}
-                                                    alt={product.name}
-                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                                />
+                                        <div key={`${product.id}-${index}`} className="w-full">
+                                            <div className="group cursor-pointer h-full flex flex-col" onClick={() => openProductModal(product)}>
+                                                <div className="relative aspect-square overflow-hidden rounded-lg mb-2 md:mb-3 bg-stone-100 border border-stone-200 flex-shrink-0">
+                                                    <img
+                                                        src={product.imageUrl || product.image}
+                                                        alt={product.name}
+                                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                    />
 
-                                                {/* Badge de Fuente */}
-                                                {product.source === 'fb' && (
-                                                    <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm z-10"> FB </div>
-                                                )}
-                                                {product.source === 'w' && (
-                                                    <div className="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm z-10"> W </div>
-                                                )}
+                                                    {/* Badge de Fuente */}
+                                                    {product.source === 'fb' && (
+                                                        <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm z-10"> FB </div>
+                                                    )}
+                                                    {product.source === 'w' && (
+                                                        <div className="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm z-10"> W </div>
+                                                    )}
 
-                                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                                                    <span className="text-white font-bold tracking-widest text-xs border border-white px-3 py-1 bg-black/30 backdrop-blur-sm rounded-full">
-                                                        VER DETALLES
-                                                    </span>
+                                                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                                                        <span className="text-white font-bold tracking-widest text-xs border border-white px-3 py-1 bg-black/30 backdrop-blur-sm rounded-full">
+                                                            VER DETALLES
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <h3 className="text-sm font-semibold mb-1 text-stone-900 group-hover:text-amber-600 transition-colors line-clamp-2 min-h-[2.5em] leading-tight" title={product.name}>
-                                                {product.name}
-                                            </h3>
-                                            <p className="text-lg font-serif font-bold text-amber-700">
-                                                {typeof product.price === 'number'
-                                                    ? product.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-                                                    : product.price}
-                                            </p>
+                                                <h3 className="text-xs md:text-sm font-semibold mb-1 text-stone-900 group-hover:text-amber-600 transition-colors line-clamp-2 min-h-[2.5em] leading-tight" title={product.name}>
+                                                    {product.name}
+                                                </h3>
+                                                <p className="text-sm md:text-lg font-serif font-bold text-amber-700">
+                                                    {typeof product.price === 'number'
+                                                        ? product.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                                                        : product.price}
+                                                </p>
+                                            </div>
                                         </div>
                                     ))}
 
