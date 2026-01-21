@@ -432,12 +432,12 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Products Grid */}
-            <section id="coleccion" className="py-20 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <span className="text-xs tracking-[0.3em] text-amber-600 mb-3 block font-semibold">TIENDA</span>
-                        <h2 className="text-4xl md:text-5xl font-serif bg-gradient-to-r from-amber-600 to-amber-700 bg-clip-text text-transparent mb-4">
+            {/* Products Grid - Edge to Edge Mobile */}
+            <section id="coleccion" className="py-12 md:py-20 bg-white">
+                <div className="px-4 md:px-6 lg:max-w-7xl lg:mx-auto">
+                    <div className="text-center mb-8 md:mb-16">
+                        <span className="text-xs tracking-[0.3em] text-amber-600 mb-2 md:mb-3 block font-semibold">TIENDA</span>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif bg-gradient-to-r from-amber-600 to-amber-700 bg-clip-text text-transparent mb-3 md:mb-4">
                             Nuestra Colección
                         </h2>
                         <p className="text-stone-600 max-w-2xl mx-auto">
@@ -461,7 +461,8 @@ export default function Home() {
                         ))}
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8">
+                    {/* Grid de Productos - 2 columnas en móvil, 4 en tablet, 5 en desktop */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
                         {(() => {
                             const filtered = storeProducts.filter(product => {
                                 if (selectedCategory === 'Todos') return true;

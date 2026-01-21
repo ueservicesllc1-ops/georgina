@@ -784,14 +784,14 @@ export default function AdminPanel() {
 
                 {/* VISTA: Gestión de Fechas */}
                 {subTab === 'fechas' && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-serif text-amber-100">Fechas Configuradas</h2>
+                    <div className="bg-white/5 border-x-0 md:border-x border-white/10 md:rounded-lg p-4 md:p-8">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 md:mb-6 gap-3">
+                            <h2 className="text-xl md:text-2xl font-serif text-amber-100">Fechas Configuradas</h2>
                             <button
                                 onClick={() => setShowModal(true)}
-                                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold rounded hover:from-amber-500 hover:to-amber-600 transition-all"
+                                className="flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold rounded-full md:rounded hover:from-amber-500 hover:to-amber-600 transition-all text-sm md:text-base"
                             >
-                                <Plus size={20} />
+                                <Plus size={18} />
                                 Nueva Fecha
                             </button>
                         </div>
