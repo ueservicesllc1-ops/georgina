@@ -359,33 +359,35 @@ export default function UserDashboard() {
                                 return (
                                     <div key={order.id} className="bg-white/5 border border-white/10 rounded-lg overflow-hidden transition-all hover:bg-white/[0.07]">
                                         <div
-                                            className="p-6 cursor-pointer flex items-center justify-between"
+                                            className="p-5 md:p-6 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                                             onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
                                         >
-                                            <div className="flex items-center gap-6">
-                                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${status.color.split(' ')[0]}`}>
+                                            <div className="flex items-center gap-4 md:gap-6">
+                                                <div className={`w-12 h-12 flex-shrink-0 rounded-full flex items-center justify-center ${status.color.split(' ')[0]}`}>
                                                     {status.icon}
                                                 </div>
                                                 <div>
-                                                    <div className="font-semibold text-amber-100 text-lg mb-1">
+                                                    <div className="font-semibold text-amber-100 text-base md:text-lg mb-0.5">
                                                         Orden {fecha}
                                                     </div>
-                                                    <div className="flex items-center gap-3 text-sm">
+                                                    <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
                                                         <span className="text-stone-400">{order.productos?.length || 0} artículos</span>
-                                                        <span className="w-1 h-1 bg-stone-600 rounded-full"></span>
-                                                        <span className={`px-2 py-0.5 rounded text-xs border ${status.color}`}>
+                                                        <span className="hidden sm:inline w-1 h-1 bg-stone-600 rounded-full"></span>
+                                                        <span className={`px-2 py-0.5 rounded text-[10px] border ${status.color}`}>
                                                             {status.text}
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-6">
-                                                <div className="text-right">
-                                                    <div className="text-sm text-stone-400">Total</div>
-                                                    <div className="font-serif text-xl text-amber-100">${parseFloat(total).toFixed(2)}</div>
+                                            <div className="flex items-center justify-between sm:justify-end gap-6 pt-3 sm:pt-0 border-t sm:border-t-0 border-white/5">
+                                                <div className="sm:text-right">
+                                                    <div className="text-[10px] text-stone-500 uppercase tracking-widest leading-none mb-1">Total</div>
+                                                    <div className="font-serif text-lg md:text-xl text-amber-100">${parseFloat(total).toFixed(2)}</div>
                                                 </div>
-                                                {expandedOrder === order.id ? <ChevronUp className="text-stone-500" /> : <ChevronDown className="text-stone-500" />}
+                                                <div className="p-2 sm:p-0">
+                                                    {expandedOrder === order.id ? <ChevronUp className="text-stone-500" /> : <ChevronDown className="text-stone-500" />}
+                                                </div>
                                             </div>
                                         </div>
 

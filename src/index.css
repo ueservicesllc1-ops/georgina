@@ -49,3 +49,14 @@ h6 {
 ::selection {
   @apply bg-amber-600 text-stone-950;
 }
+
+@layer utilities {
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}

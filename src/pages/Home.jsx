@@ -233,17 +233,36 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* Mobile Menu */}
-                {mobileMenuOpen && (
-                    <div className="md:hidden bg-stone-800 border-t border-stone-700">
-                        <div className="px-6 py-6 flex flex-col gap-4">
-                            <a href="#home" className="text-lg text-stone-300 hover:text-amber-400">Inicio</a>
-                            <a href="#coleccion" className="text-lg text-stone-300 hover:text-amber-400">Colección</a>
-                            <a href="#servicios" className="text-lg text-stone-300 hover:text-amber-400">Servicios</a>
-                            <a href="#citas" className="text-lg text-stone-300 hover:text-amber-400">Citas</a>
+                {/* Mobile Menu Overlay */}
+                <div className={`md:hidden fixed inset-0 z-[60] bg-stone-900 transition-all duration-500 ${mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+                    <div className="flex flex-col h-full bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')]">
+                        <div className="flex justify-between items-center p-6 border-b border-white/5">
+                            <div className="text-2xl font-serif text-amber-400">GEORGINA</div>
+                            <button onClick={() => setMobileMenuOpen(false)} className="text-white p-2">
+                                <X size={32} />
+                            </button>
+                        </div>
+
+                        <div className="flex flex-col items-center justify-center flex-1 gap-8 text-center px-6">
+                            <a href="#home" onClick={() => setMobileMenuOpen(false)} className="text-3xl font-light tracking-[0.2em] text-stone-300 hover:text-amber-400 uppercase w-full py-2">Inicio</a>
+                            <a href="#coleccion" onClick={() => setMobileMenuOpen(false)} className="text-3xl font-light tracking-[0.2em] text-stone-300 hover:text-amber-400 uppercase w-full py-2">Colección</a>
+                            <a href="#servicios" onClick={() => setMobileMenuOpen(false)} className="text-3xl font-light tracking-[0.2em] text-stone-300 hover:text-amber-400 uppercase w-full py-2">Servicios</a>
+                            <a href="#citas" onClick={() => setMobileMenuOpen(false)} className="text-3xl font-light tracking-[0.2em] text-stone-300 hover:text-amber-400 uppercase w-full py-2">Citas</a>
+                            <button
+                                onClick={() => { setMobileMenuOpen(false); navigate('/cart'); }}
+                                className="mt-4 px-10 py-4 bg-amber-600 text-stone-900 font-bold tracking-widest rounded-full shadow-xl"
+                            >
+                                VER MI CARRITO ({getCartCount()})
+                            </button>
+                        </div>
+
+                        <div className="p-10 border-t border-white/5 flex justify-center gap-8">
+                            <Instagram className="text-stone-500 hover:text-amber-400 transition-colors" />
+                            <Facebook className="text-stone-500 hover:text-amber-400 transition-colors" />
+                            <Mail className="text-stone-500 hover:text-amber-400 transition-colors" />
                         </div>
                     </div>
-                )}
+                </div>
             </nav>
 
             {/* Hero Section */}
@@ -426,15 +445,15 @@ export default function Home() {
                         </p>
                     </div>
 
-                    {/* Filtros de Categoría */}
-                    <div className="flex flex-wrap justify-center gap-4 mb-12">
+                    {/* Filtros de Categoría - Mobile Horizontal Scroll */}
+                    <div className="flex overflow-x-auto pb-4 mb-12 scrollbar-none snap-x md:flex-wrap md:justify-center gap-3 px-4 -mx-4">
                         {categories.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
-                                className={`px-6 py-2 rounded-full text-sm tracking-wider transition-all border ${selectedCategory === cat
-                                    ? 'bg-amber-600 text-white border-amber-600'
-                                    : 'bg-white text-stone-600 border-stone-200 hover:border-amber-600 hover:text-amber-600'
+                                className={`flex-shrink-0 snap-start px-6 py-2.5 rounded-full text-xs tracking-widest transition-all border font-bold ${selectedCategory === cat
+                                    ? 'bg-amber-600 text-white border-amber-600 shadow-md scale-105'
+                                    : 'bg-white text-stone-500 border-stone-200 hover:border-amber-600 hover:text-amber-600'
                                     }`}
                             >
                                 {cat.toUpperCase()}
@@ -544,100 +563,101 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* MODAL DE DETALLE DE PRODUCTO */}
+            {/* MODAL DE DETALLE DE PRODUCTO - MOBILE FIRST */}
             {selectedProduct && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200" onClick={closeProductModal}>
+                <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-300" onClick={closeProductModal}>
                     <div
-                        className="bg-white w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in zoom-in-95 duration-200 relative"
-                        onClick={e => e.stopPropagation()} // Evitar cierre al clickear dentro
+                        className="bg-white w-full h-[90vh] md:h-auto md:max-w-4xl rounded-t-3xl md:rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in slide-in-from-bottom duration-500 relative"
+                        onClick={e => e.stopPropagation()}
                     >
+                        {/* Botón de Cierre Premium */}
                         <button
                             onClick={closeProductModal}
-                            className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+                            className="absolute top-4 right-4 z-20 p-2.5 bg-white/90 border border-stone-200 text-stone-950 rounded-full shadow-lg active:scale-95 transition-all"
                         >
                             <X size={20} />
                         </button>
 
-                        {/* Imagen Grande */}
-                        <div className="w-full md:w-1/2 bg-stone-100 h-64 md:h-auto flex items-center justify-center p-4">
+                        {/* Contenedor de Imagen */}
+                        <div className="w-full md:w-1/2 bg-stone-50 h-[45%] md:h-auto flex items-center justify-center p-6 relative">
                             <img
                                 src={selectedProduct.imageUrl || selectedProduct.image}
                                 alt={selectedProduct.name}
-                                className="max-w-full max-h-full object-contain mix-blend-multiply"
+                                className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-2xl"
                             />
+                            {/* Badges de Origen */}
+                            <div className="absolute bottom-4 left-6 flex gap-2">
+                                {selectedProduct.source === 'fb' && (
+                                    <span className="bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg">FIVE BELOW</span>
+                                )}
+                                {selectedProduct.source === 'w' && (
+                                    <span className="bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg">WALGREENS</span>
+                                )}
+                            </div>
                         </div>
 
                         {/* Detalles */}
-                        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center bg-white">
-                            <span className="text-amber-600 font-bold tracking-widest text-xs mb-2 uppercase">
-                                {selectedProduct.category || 'Producto Exclusivo'}
-                            </span>
-                            <h2 className="text-3xl font-serif text-stone-900 mb-4 leading-tight">
-                                {selectedProduct.name}
-                            </h2>
-
-                            <div className="flex items-end gap-4 mb-6 border-b border-stone-100 pb-6">
-                                <span className="text-3xl font-bold text-stone-900">
-                                    {typeof selectedProduct.price === 'number'
-                                        ? selectedProduct.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-                                        : selectedProduct.price}
-                                </span>
-                                {selectedProduct.weight > 0 && (
-                                    <span className="text-stone-400 text-sm mb-1">
-                                        Peso aprox: {selectedProduct.weight} lbs
+                        <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-between bg-white overflow-y-auto">
+                            <div>
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="h-[2px] w-8 bg-amber-600"></span>
+                                    <span className="text-amber-600 font-bold tracking-[0.2em] text-[10px] uppercase">
+                                        {selectedProduct.category || 'Producto Exclusivo'}
                                     </span>
-                                )}
-                            </div>
+                                </div>
 
-                            {/* Tallas y Variantes (Si existen) */}
-                            <div className="space-y-4 mb-8">
-                                {(selectedProduct.size || selectedProduct.talla) && (
-                                    <div className="flex items-center gap-4">
-                                        <span className="text-stone-500 text-sm font-semibold w-16">Talla:</span>
-                                        <span className="px-3 py-1 bg-stone-100 text-stone-800 rounded font-medium border border-stone-200">
-                                            {selectedProduct.size || selectedProduct.talla}
-                                        </span>
-                                    </div>
-                                )}
-                                {(selectedProduct.color) && (
-                                    <div className="flex items-center gap-4">
-                                        <span className="text-stone-500 text-sm font-semibold w-16">Color:</span>
-                                        <span className="text-stone-800 font-medium">
-                                            {selectedProduct.color}
-                                        </span>
-                                    </div>
-                                )}
-                                <div className="flex items-center gap-4">
-                                    <span className="text-stone-500 text-sm font-semibold w-16">Dispo:</span>
-                                    {selectedProduct.quantity > 0 ? (
-                                        <span className="text-green-600 font-bold text-sm flex items-center gap-1">
-                                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                            {selectedProduct.quantity} Unidades Disponibles
-                                        </span>
-                                    ) : (
-                                        <span className="text-red-500 font-bold text-sm flex items-center gap-1">
-                                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                                            Agotado
+                                <h2 className="text-2xl md:text-3xl font-serif text-stone-900 mb-4 leading-tight">
+                                    {selectedProduct.name}
+                                </h2>
+
+                                <div className="flex items-baseline gap-4 mb-6">
+                                    <span className="text-3xl font-bold text-stone-900 font-serif">
+                                        {typeof selectedProduct.price === 'number'
+                                            ? selectedProduct.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                                            : selectedProduct.price}
+                                    </span>
+                                    {selectedProduct.weight > 0 && (
+                                        <span className="text-stone-400 text-sm font-medium">
+                                            ({selectedProduct.weight} lbs)
                                         </span>
                                     )}
+                                </div>
+
+                                <div className="space-y-4 py-6 border-y border-stone-100 mb-8">
+                                    {(selectedProduct.size || selectedProduct.talla) && (
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-stone-500 text-sm">Talla disponible:</span>
+                                            <span className="px-4 py-1.5 bg-stone-900 text-white text-xs rounded-full font-bold">
+                                                {selectedProduct.size || selectedProduct.talla}
+                                            </span>
+                                        </div>
+                                    )}
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-stone-500 text-sm">Disponibilidad:</span>
+                                        {selectedProduct.quantity > 0 ? (
+                                            <span className="text-green-600 text-xs font-bold flex items-center gap-1">
+                                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                                STOCK DISPONIBLE
+                                            </span>
+                                        ) : (
+                                            <span className="text-red-500 text-xs font-bold">BAJO PEDIDO</span>
+                                        )}
+                                    </div>
+                                    <p className="text-stone-600 text-[13px] leading-relaxed">
+                                        Producto de alta calidad seleccionado por expertos. Enviamos directamente a tu bodega en USA y luego a Ecuador.
+                                    </p>
                                 </div>
                             </div>
 
                             <button
                                 onClick={() => {
-                                    if (selectedProduct.quantity > 0) {
-                                        addToCart(selectedProduct);
-                                        closeProductModal();
-                                    }
+                                    addToCart(selectedProduct);
+                                    closeProductModal();
                                 }}
-                                disabled={!selectedProduct.quantity || selectedProduct.quantity <= 0}
-                                className={`w-full py-4 font-bold tracking-widest transition-all rounded-lg shadow-xl flex items-center justify-center gap-3 ${selectedProduct.quantity > 0
-                                    ? 'bg-stone-900 text-white hover:bg-amber-600 hover:shadow-2xl'
-                                    : 'bg-stone-200 text-stone-400 cursor-not-allowed shadow-none'
-                                    }`}
+                                className="w-full py-5 bg-gradient-to-r from-amber-600 to-amber-700 text-white font-bold tracking-widest text-sm rounded-2xl shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-3 mt-4"
                             >
                                 <ShoppingBag size={20} />
-                                {selectedProduct.quantity > 0 ? 'AGREGAR AL CARRITO' : 'AGOTADO'}
+                                AGREGAR AL CARRITO
                             </button>
                         </div>
                     </div>
