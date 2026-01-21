@@ -699,85 +699,85 @@ export default function AdminPanel() {
 
     return (
         <div className="min-h-screen bg-stone-950 notranslate" translate="no">
-            {/* Header Admin */}
+            {/* Header Admin - Full Width Mobile */}
             <nav className="bg-stone-900 border-b border-amber-600/30">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="px-4 md:px-6">
                     <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center gap-3">
-                            <ShoppingBag className="text-amber-500" size={24} />
+                        <div className="flex items-center gap-2 md:gap-3">
+                            <ShoppingBag className="text-amber-500" size={20} />
                             <div>
-                                <div className="text-lg font-serif text-amber-100">GEORGINA - ADMIN</div>
-                                <div className="text-[10px] text-amber-400 uppercase tracking-wider">Panel Administrativo</div>
+                                <div className="text-base md:text-lg font-serif text-amber-100">GEORGINA - ADMIN</div>
+                                <div className="text-[9px] md:text-[10px] text-amber-400 uppercase tracking-wider">Panel Administrativo</div>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-4">
-                            <span className="text-sm text-stone-400">
-                                👑 Administrador (PIN)
+                        <div className="flex items-center gap-2 md:gap-4">
+                            <span className="hidden sm:inline text-xs md:text-sm text-stone-400">
+                                👑 Admin
                             </span>
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 text-sm text-stone-400 hover:text-amber-500 transition-colors"
+                                className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-stone-400 hover:text-amber-500 transition-colors"
                             >
-                                <LogOut size={18} />
-                                Salir
+                                <LogOut size={16} />
+                                <span className="hidden sm:inline">Salir</span>
                             </button>
                         </div>
                     </div>
                 </div>
             </nav>
 
-            {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-6 py-12">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            {/* Main Content - Full Width Mobile */}
+            <div className="px-4 md:px-6 py-6 md:py-12">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 gap-4">
                     <div>
-                        <h1 className="text-4xl font-serif text-amber-100 mb-2">Panel de Administración</h1>
-                        <p className="text-stone-400">Gestión de fechas y citas agendadas</p>
+                        <h1 className="text-2xl md:text-4xl font-serif text-amber-100 mb-1 md:mb-2">Panel de Administración</h1>
+                        <p className="text-xs md:text-sm text-stone-400">Gestión de fechas y citas agendadas</p>
                     </div>
 
-                    {/* Tabs Admin */}
-                    <div className="flex bg-stone-900 p-1 rounded-lg border border-stone-800">
+                    {/* Tabs Admin - Horizontal Scroll Mobile */}
+                    <div className="flex overflow-x-auto scrollbar-none bg-stone-900 p-1 rounded-lg border border-stone-800 gap-1 -mx-4 px-4 md:mx-0 md:px-0">
                         <button
                             onClick={() => setSubTab('fechas')}
-                            className={`px-6 py-2 rounded-md text-sm font-semibold transition-all ${subTab === 'fechas' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
+                            className={`flex-shrink-0 px-4 md:px-6 py-2 rounded-md text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${subTab === 'fechas' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
                         >
                             Fechas Disponibles
                         </button>
                         <button
                             onClick={() => setSubTab('citas')}
-                            className={`px-6 py-2 rounded-md text-sm font-semibold transition-all ${subTab === 'citas' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
+                            className={`flex-shrink-0 px-4 md:px-6 py-2 rounded-md text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${subTab === 'citas' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
                         >
                             Citas Agendadas
                         </button>
                         <button
                             onClick={() => setSubTab('carrusel')}
-                            className={`px-6 py-2 rounded-md text-sm font-semibold transition-all ${subTab === 'carrusel' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
+                            className={`flex-shrink-0 px-4 md:px-6 py-2 rounded-md text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${subTab === 'carrusel' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
                         >
                             Carrusel
                         </button>
                         <button
-                            onClick={() => setSubTab('featured')}
-                            className={`px-6 py-2 rounded-md text-sm font-semibold transition-all ${subTab === 'featured' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
+                            onClick={() => setSubTab('destacados')}
+                            className={`flex-shrink-0 px-4 md:px-6 py-2 rounded-md text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${subTab === 'destacados' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
                         >
                             Destacados
                         </button>
                         <button
-                            onClick={() => setSubTab('tienda')}
-                            className={`px-6 py-2 rounded-md text-sm font-semibold transition-all ${subTab === 'tienda' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
+                            onClick={() => setSubTab('inventario')}
+                            className={`flex-shrink-0 px-4 md:px-6 py-2 rounded-md text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${subTab === 'inventario' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
                         >
                             Inventario
                         </button>
                         <button
                             onClick={() => setSubTab('pedidos')}
-                            className={`px-6 py-2 rounded-md text-sm font-semibold transition-all ${subTab === 'pedidos' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
+                            className={`flex-shrink-0 px-4 md:px-6 py-2 rounded-md text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${subTab === 'pedidos' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
                         >
-                            Pedidos Web ({onlineOrders.filter(o => o.status === 'pending').length})
+                            Pedidos Online
                         </button>
                         <button
-                            onClick={() => setSubTab('settings')}
-                            className={`px-6 py-2 rounded-md text-sm font-semibold transition-all ${subTab === 'settings' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
+                            onClick={() => setSubTab('configuracion')}
+                            className={`flex-shrink-0 px-4 md:px-6 py-2 rounded-md text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${subTab === 'configuracion' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
                         >
-                            Configuración
+                            Config
                         </button>
                     </div>
                 </div>
@@ -1008,674 +1008,688 @@ export default function AdminPanel() {
             </div>
 
             {/* Modal Agregar Fecha - Paso 1: Fecha */}
-            {showModal && step === 1 && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-                    <div className="bg-stone-900 border border-white/10 rounded-lg max-w-md w-full mx-4 p-8 relative">
-                        <button
-                            onClick={cerrarModal}
-                            className="absolute top-4 right-4 text-stone-400 hover:text-amber-500 transition-colors"
-                        >
-                            <X size={24} />
-                        </button>
+            {
+                showModal && step === 1 && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                        <div className="bg-stone-900 border border-white/10 rounded-lg max-w-md w-full mx-4 p-8 relative">
+                            <button
+                                onClick={cerrarModal}
+                                className="absolute top-4 right-4 text-stone-400 hover:text-amber-500 transition-colors"
+                            >
+                                <X size={24} />
+                            </button>
 
-                        <h2 className="text-2xl font-serif text-amber-100 mb-2">Agregar Nueva Fecha</h2>
-                        <p className="text-stone-400 text-sm mb-6">Paso 1 de 2: Selecciona la fecha</p>
+                            <h2 className="text-2xl font-serif text-amber-100 mb-2">Agregar Nueva Fecha</h2>
+                            <p className="text-stone-400 text-sm mb-6">Paso 1 de 2: Selecciona la fecha</p>
 
-                        <form onSubmit={(e) => { e.preventDefault(); siguientePaso(); }} className="space-y-6">
-                            <div>
-                                <label className="block text-sm text-amber-100 mb-2">Fecha</label>
-                                <input
-                                    type="date"
-                                    value={nuevaFecha.fecha}
-                                    onChange={(e) => setNuevaFecha({ ...nuevaFecha, fecha: e.target.value })}
-                                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-amber-100 rounded focus:border-amber-600 outline-none"
-                                    required
-                                />
-                            </div>
+                            <form onSubmit={(e) => { e.preventDefault(); siguientePaso(); }} className="space-y-6">
+                                <div>
+                                    <label className="block text-sm text-amber-100 mb-2">Fecha</label>
+                                    <input
+                                        type="date"
+                                        value={nuevaFecha.fecha}
+                                        onChange={(e) => setNuevaFecha({ ...nuevaFecha, fecha: e.target.value })}
+                                        className="w-full bg-transparent border border-stone-700 px-4 py-3 text-amber-100 rounded focus:border-amber-600 outline-none"
+                                        required
+                                    />
+                                </div>
 
-                            <div>
-                                <label className="block text-sm text-amber-100 mb-2">Tienda</label>
-                                <select
-                                    value={nuevaFecha.tienda}
-                                    onChange={(e) => setNuevaFecha({ ...nuevaFecha, tienda: e.target.value })}
-                                    className="w-full bg-stone-800 border border-stone-700 px-4 py-3 text-amber-100 rounded focus:border-amber-600 outline-none"
+                                <div>
+                                    <label className="block text-sm text-amber-100 mb-2">Tienda</label>
+                                    <select
+                                        value={nuevaFecha.tienda}
+                                        onChange={(e) => setNuevaFecha({ ...nuevaFecha, tienda: e.target.value })}
+                                        className="w-full bg-stone-800 border border-stone-700 px-4 py-3 text-amber-100 rounded focus:border-amber-600 outline-none"
+                                    >
+                                        <option value="Burlington">Burlington</option>
+                                        <option value="Marshall's">Marshall's</option>
+                                        <option value="Ross">Ross</option>
+                                    </select>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold py-3 rounded hover:from-amber-500 hover:to-amber-600 transition-all"
                                 >
-                                    <option value="Burlington">Burlington</option>
-                                    <option value="Marshall's">Marshall's</option>
-                                    <option value="Ross">Ross</option>
-                                </select>
+                                    Siguiente: Seleccionar Horarios
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                )
+            }
+
+            {/* Modal Agregar Fecha - Paso 2: Horarios */}
+            {
+                showModal && step === 2 && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                        <div className="bg-stone-900 border border-white/10 rounded-lg max-w-2xl w-full mx-4 p-8 relative">
+                            <button
+                                onClick={cerrarModal}
+                                className="absolute top-4 right-4 text-stone-400 hover:text-amber-500 transition-colors"
+                            >
+                                <X size={24} />
+                            </button>
+
+                            <h2 className="text-2xl font-serif text-amber-100 mb-2">Seleccionar Horarios</h2>
+                            <p className="text-stone-400 text-sm mb-6">
+                                Paso 2 de 2: Activa los horarios disponibles para el {new Date(nuevaFecha.fecha).toLocaleDateString('es-ES')}
+                            </p>
+
+                            <form onSubmit={agregarFecha} className="space-y-6">
+                                <div className="grid grid-cols-3 gap-3" translate="no">
+                                    {horariosDisponibles.map((horario) => {
+                                        const isSelected = nuevaFecha.horarios.includes(horario);
+                                        return (
+                                            <button
+                                                key={horario}
+                                                type="button"
+                                                onClick={() => toggleHorario(horario)}
+                                                className={`
+                        p-4 rounded-lg border-2 transition-all text-center font-semibold notranslate
+                        ${isSelected
+                                                        ? 'bg-amber-600/30 border-amber-600 text-amber-100'
+                                                        : 'bg-stone-800 border-stone-700 text-stone-400 hover:border-stone-600'
+                                                    }
+                      `}
+                                                translate="no"
+                                            >
+                                                <Clock size={20} className="mx-auto mb-2" />
+                                                {horario}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className="bg-amber-600/10 border border-amber-600/30 rounded-lg p-4">
+                                    <p className="text-sm text-amber-100">
+                                        <strong>{nuevaFecha.horarios.length}</strong> horario{nuevaFecha.horarios.length !== 1 ? 's' : ''} seleccionado{nuevaFecha.horarios.length !== 1 ? 's' : ''}
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => setStep(1)}
+                                        className="flex-1 bg-stone-800 text-amber-100 font-semibold py-3 rounded hover:bg-stone-700 transition-all"
+                                    >
+                                        Atrás
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="flex-1 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold py-3 rounded hover:from-amber-500 hover:to-amber-600 transition-all"
+                                    >
+                                        Guardar Fecha
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )
+            }
+
+            {/* VISTA: Gestión de Carrusel */}
+            {
+                subTab === 'carrusel' && (
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                        <h2 className="text-2xl font-serif text-amber-100 mb-6">Gestión de Carrusel</h2>
+
+                        {/* Formulario para subir nueva imagen */}
+                        <form onSubmit={uploadCarouselImage} className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
+                            <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
+                                <Upload size={20} />
+                                Subir Nueva Imagen
+                            </h3>
+
+                            <div className="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label className="block text-sm text-stone-400 mb-2">Imagen del Producto</label>
+                                    <input
+                                        id="carousel-file-input"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageSelect}
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-stone-400 mb-2">Nombre del Producto</label>
+                                    <input
+                                        type="text"
+                                        value={newCarouselImage.name}
+                                        onChange={(e) => setNewCarouselImage({ ...newCarouselImage, name: e.target.value })}
+                                        placeholder="Ej: Fashion Item"
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-stone-400 mb-2">Precio</label>
+                                    <input
+                                        type="text"
+                                        value={newCarouselImage.price}
+                                        onChange={(e) => setNewCarouselImage({ ...newCarouselImage, price: e.target.value })}
+                                        placeholder="Ej: $45.00"
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold py-3 rounded hover:from-amber-500 hover:to-amber-600 transition-all"
+                                disabled={uploadingImage}
+                                className="mt-4 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold rounded hover:from-amber-500 hover:to-amber-600 transition-all disabled:opacity-50 flex items-center gap-2"
                             >
-                                Siguiente: Seleccionar Horarios
+                                <Upload size={18} />
+                                {uploadingImage ? 'Subiendo...' : 'Subir Imagen'}
                             </button>
                         </form>
-                    </div>
-                </div>
-            )}
 
-            {/* Modal Agregar Fecha - Paso 2: Horarios */}
-            {showModal && step === 2 && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-                    <div className="bg-stone-900 border border-white/10 rounded-lg max-w-2xl w-full mx-4 p-8 relative">
-                        <button
-                            onClick={cerrarModal}
-                            className="absolute top-4 right-4 text-stone-400 hover:text-amber-500 transition-colors"
-                        >
-                            <X size={24} />
-                        </button>
+                        {/* Galería de imágenes del carrusel */}
+                        <div>
+                            <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
+                                <Image size={20} />
+                                Imágenes Actuales ({carouselImages.length})
+                            </h3>
 
-                        <h2 className="text-2xl font-serif text-amber-100 mb-2">Seleccionar Horarios</h2>
-                        <p className="text-stone-400 text-sm mb-6">
-                            Paso 2 de 2: Activa los horarios disponibles para el {new Date(nuevaFecha.fecha).toLocaleDateString('es-ES')}
-                        </p>
-
-                        <form onSubmit={agregarFecha} className="space-y-6">
-                            <div className="grid grid-cols-3 gap-3" translate="no">
-                                {horariosDisponibles.map((horario) => {
-                                    const isSelected = nuevaFecha.horarios.includes(horario);
-                                    return (
-                                        <button
-                                            key={horario}
-                                            type="button"
-                                            onClick={() => toggleHorario(horario)}
-                                            className={`
-                        p-4 rounded-lg border-2 transition-all text-center font-semibold notranslate
-                        ${isSelected
-                                                    ? 'bg-amber-600/30 border-amber-600 text-amber-100'
-                                                    : 'bg-stone-800 border-stone-700 text-stone-400 hover:border-stone-600'
-                                                }
-                      `}
-                                            translate="no"
-                                        >
-                                            <Clock size={20} className="mx-auto mb-2" />
-                                            {horario}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            <div className="bg-amber-600/10 border border-amber-600/30 rounded-lg p-4">
-                                <p className="text-sm text-amber-100">
-                                    <strong>{nuevaFecha.horarios.length}</strong> horario{nuevaFecha.horarios.length !== 1 ? 's' : ''} seleccionado{nuevaFecha.horarios.length !== 1 ? 's' : ''}
-                                </p>
-                            </div>
-
-                            <div className="flex gap-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setStep(1)}
-                                    className="flex-1 bg-stone-800 text-amber-100 font-semibold py-3 rounded hover:bg-stone-700 transition-all"
-                                >
-                                    Atrás
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="flex-1 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold py-3 rounded hover:from-amber-500 hover:to-amber-600 transition-all"
-                                >
-                                    Guardar Fecha
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {/* VISTA: Gestión de Carrusel */}
-            {subTab === 'carrusel' && (
-                <div className="bg-white/5 border border-white/10 rounded-lg p-8">
-                    <h2 className="text-2xl font-serif text-amber-100 mb-6">Gestión de Carrusel</h2>
-
-                    {/* Formulario para subir nueva imagen */}
-                    <form onSubmit={uploadCarouselImage} className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
-                        <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
-                            <Upload size={20} />
-                            Subir Nueva Imagen
-                        </h3>
-
-                        <div className="grid md:grid-cols-3 gap-4">
-                            <div>
-                                <label className="block text-sm text-stone-400 mb-2">Imagen del Producto</label>
-                                <input
-                                    id="carousel-file-input"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageSelect}
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm text-stone-400 mb-2">Nombre del Producto</label>
-                                <input
-                                    type="text"
-                                    value={newCarouselImage.name}
-                                    onChange={(e) => setNewCarouselImage({ ...newCarouselImage, name: e.target.value })}
-                                    placeholder="Ej: Fashion Item"
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm text-stone-400 mb-2">Precio</label>
-                                <input
-                                    type="text"
-                                    value={newCarouselImage.price}
-                                    onChange={(e) => setNewCarouselImage({ ...newCarouselImage, price: e.target.value })}
-                                    placeholder="Ej: $45.00"
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={uploadingImage}
-                            className="mt-4 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold rounded hover:from-amber-500 hover:to-amber-600 transition-all disabled:opacity-50 flex items-center gap-2"
-                        >
-                            <Upload size={18} />
-                            {uploadingImage ? 'Subiendo...' : 'Subir Imagen'}
-                        </button>
-                    </form>
-
-                    {/* Galería de imágenes del carrusel */}
-                    <div>
-                        <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
-                            <Image size={20} />
-                            Imágenes Actuales ({carouselImages.length})
-                        </h3>
-
-                        {carouselImages.length === 0 ? (
-                            <div className="text-center py-12 text-stone-400">
-                                <Image size={48} className="mx-auto mb-4 opacity-50" />
-                                <p>No hay imágenes en el carrusel</p>
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                {carouselImages.map((image) => (
-                                    <div key={image.id} className="bg-white/5 border border-white/10 rounded-lg overflow-hidden group">
-                                        <div className="aspect-[4/3] relative">
-                                            <img
-                                                src={image.imageUrl}
-                                                alt={image.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                <button
-                                                    onClick={() => deleteCarouselImage(image.id)}
-                                                    className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full transition-colors"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
+                            {carouselImages.length === 0 ? (
+                                <div className="text-center py-12 text-stone-400">
+                                    <Image size={48} className="mx-auto mb-4 opacity-50" />
+                                    <p>No hay imágenes en el carrusel</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                    {carouselImages.map((image) => (
+                                        <div key={image.id} className="bg-white/5 border border-white/10 rounded-lg overflow-hidden group">
+                                            <div className="aspect-[4/3] relative">
+                                                <img
+                                                    src={image.imageUrl}
+                                                    alt={image.name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <button
+                                                        onClick={() => deleteCarouselImage(image.id)}
+                                                        className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full transition-colors"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="p-3">
+                                                <p className="text-sm font-semibold text-amber-100 truncate">{image.name}</p>
+                                                <p className="text-xs text-amber-400">{image.price}</p>
                                             </div>
                                         </div>
-                                        <div className="p-3">
-                                            <p className="text-sm font-semibold text-amber-100 truncate">{image.name}</p>
-                                            <p className="text-xs text-amber-400">{image.price}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
             {/* VISTA: Gestión de Destacados (Featured) */}
-            {subTab === 'featured' && (
-                <div className="bg-white/5 border border-white/10 rounded-lg p-8">
-                    <h2 className="text-2xl font-serif text-amber-100 mb-6">Gestión de Productos Destacados</h2>
+            {
+                subTab === 'featured' && (
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                        <h2 className="text-2xl font-serif text-amber-100 mb-6">Gestión de Productos Destacados</h2>
 
-                    {/* Formulario para subir nuevo producto destacado */}
-                    <form onSubmit={uploadFeaturedProduct} className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
-                        <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
-                            <Upload size={20} />
-                            Añadir Nuevo Destacado
-                        </h3>
+                        {/* Formulario para subir nuevo producto destacado */}
+                        <form onSubmit={uploadFeaturedProduct} className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
+                            <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
+                                <Upload size={20} />
+                                Añadir Nuevo Destacado
+                            </h3>
 
-                        <div className="grid md:grid-cols-5 gap-4">
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Imagen del Producto</label>
-                                <input
-                                    id="featured-file-input"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleFeaturedImageSelect}
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
+                            <div className="grid md:grid-cols-5 gap-4">
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Imagen del Producto</label>
+                                    <input
+                                        id="featured-file-input"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFeaturedImageSelect}
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Nombre</label>
+                                    <input
+                                        type="text"
+                                        value={newFeaturedProduct.name}
+                                        onChange={(e) => setNewFeaturedProduct({ ...newFeaturedProduct, name: e.target.value })}
+                                        placeholder="Ej: Bolso Hermès"
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Precio</label>
+                                    <input
+                                        type="text"
+                                        value={newFeaturedProduct.price}
+                                        onChange={(e) => setNewFeaturedProduct({ ...newFeaturedProduct, price: e.target.value })}
+                                        placeholder="Ej: $4,500"
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Peso (Lbs)</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        value={newFeaturedProduct.weight}
+                                        onChange={(e) => setNewFeaturedProduct({ ...newFeaturedProduct, weight: e.target.value })}
+                                        placeholder="Ej: 2.5"
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Categoría</label>
+                                    <input
+                                        type="text"
+                                        value={newFeaturedProduct.category}
+                                        onChange={(e) => setNewFeaturedProduct({ ...newFeaturedProduct, category: e.target.value })}
+                                        placeholder="Ej: Bolsos"
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
                             </div>
 
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Nombre</label>
-                                <input
-                                    type="text"
-                                    value={newFeaturedProduct.name}
-                                    onChange={(e) => setNewFeaturedProduct({ ...newFeaturedProduct, name: e.target.value })}
-                                    placeholder="Ej: Bolso Hermès"
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
+                            <button
+                                type="submit"
+                                disabled={uploadingFeatured}
+                                className="mt-4 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold rounded hover:from-amber-500 hover:to-amber-600 transition-all disabled:opacity-50 flex items-center gap-2"
+                            >
+                                <Upload size={18} />
+                                {uploadingFeatured ? 'Subiendo...' : 'Publicar Destacado'}
+                            </button>
+                        </form>
 
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Precio</label>
-                                <input
-                                    type="text"
-                                    value={newFeaturedProduct.price}
-                                    onChange={(e) => setNewFeaturedProduct({ ...newFeaturedProduct, price: e.target.value })}
-                                    placeholder="Ej: $4,500"
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
+                        {/* Galería de destacados actuales */}
+                        <div>
+                            <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
+                                <Star size={20} />
+                                Destacados Actuales ({featuredProducts.length})
+                            </h3>
 
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Peso (Lbs)</label>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    value={newFeaturedProduct.weight}
-                                    onChange={(e) => setNewFeaturedProduct({ ...newFeaturedProduct, weight: e.target.value })}
-                                    placeholder="Ej: 2.5"
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
-
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Categoría</label>
-                                <input
-                                    type="text"
-                                    value={newFeaturedProduct.category}
-                                    onChange={(e) => setNewFeaturedProduct({ ...newFeaturedProduct, category: e.target.value })}
-                                    placeholder="Ej: Bolsos"
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={uploadingFeatured}
-                            className="mt-4 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold rounded hover:from-amber-500 hover:to-amber-600 transition-all disabled:opacity-50 flex items-center gap-2"
-                        >
-                            <Upload size={18} />
-                            {uploadingFeatured ? 'Subiendo...' : 'Publicar Destacado'}
-                        </button>
-                    </form>
-
-                    {/* Galería de destacados actuales */}
-                    <div>
-                        <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
-                            <Star size={20} />
-                            Destacados Actuales ({featuredProducts.length})
-                        </h3>
-
-                        {featuredProducts.length === 0 ? (
-                            <div className="text-center py-12 text-stone-400">
-                                <Star size={48} className="mx-auto mb-4 opacity-50" />
-                                <p>No hay productos destacados</p>
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                {featuredProducts.map((product) => (
-                                    <div key={product.id} className="bg-white/5 border border-white/10 rounded-lg overflow-hidden group">
-                                        <div className="aspect-[3/4] relative">
-                                            <img
-                                                src={product.imageUrl}
-                                                alt={product.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                <button
-                                                    onClick={() => deleteFeaturedProduct(product.id)}
-                                                    className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full transition-colors"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
+                            {featuredProducts.length === 0 ? (
+                                <div className="text-center py-12 text-stone-400">
+                                    <Star size={48} className="mx-auto mb-4 opacity-50" />
+                                    <p>No hay productos destacados</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                    {featuredProducts.map((product) => (
+                                        <div key={product.id} className="bg-white/5 border border-white/10 rounded-lg overflow-hidden group">
+                                            <div className="aspect-[3/4] relative">
+                                                <img
+                                                    src={product.imageUrl}
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <button
+                                                        onClick={() => deleteFeaturedProduct(product.id)}
+                                                        className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full transition-colors"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="p-3">
+                                                <p className="text-sm font-semibold text-amber-100 truncate">{product.name}</p>
+                                                <p className="text-xs text-amber-400 mb-1">{product.price}</p>
+                                                <span className="text-[10px] uppercase tracking-wider bg-amber-600/20 text-amber-400 px-2 py-1 rounded-full">
+                                                    {product.category}
+                                                </span>
                                             </div>
                                         </div>
-                                        <div className="p-3">
-                                            <p className="text-sm font-semibold text-amber-100 truncate">{product.name}</p>
-                                            <p className="text-xs text-amber-400 mb-1">{product.price}</p>
-                                            <span className="text-[10px] uppercase tracking-wider bg-amber-600/20 text-amber-400 px-2 py-1 rounded-full">
-                                                {product.category}
-                                            </span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* VISTA: Gestión de Tienda Online (Nuestra Colección) */}
-            {subTab === 'tienda' && (
-                <div className="bg-white/5 border border-white/10 rounded-lg p-8">
-                    <h2 className="text-2xl font-serif text-amber-100 mb-6">Gestión de Tienda (Nuestra Colección)</h2>
+            {
+                subTab === 'tienda' && (
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                        <h2 className="text-2xl font-serif text-amber-100 mb-6">Gestión de Tienda (Nuestra Colección)</h2>
 
-                    {/* Formulario */}
-                    <form onSubmit={uploadStoreProduct} className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
-                        <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
-                            <Upload size={20} />
-                            Añadir Nuevo Producto
-                        </h3>
+                        {/* Formulario */}
+                        <form onSubmit={uploadStoreProduct} className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
+                            <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
+                                <Upload size={20} />
+                                Añadir Nuevo Producto
+                            </h3>
 
-                        <div className="grid md:grid-cols-5 gap-4">
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Imagen</label>
-                                <input
-                                    id="store-file-input"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleStoreImageSelect}
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
+                            <div className="grid md:grid-cols-5 gap-4">
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Imagen</label>
+                                    <input
+                                        id="store-file-input"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleStoreImageSelect}
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Nombre</label>
+                                    <input
+                                        type="text"
+                                        value={newStoreProduct.name}
+                                        onChange={(e) => setNewStoreProduct({ ...newStoreProduct, name: e.target.value })}
+                                        placeholder="Ej: Zapatos Louboutin"
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Precio</label>
+                                    <input
+                                        type="text"
+                                        value={newStoreProduct.price}
+                                        onChange={(e) => setNewStoreProduct({ ...newStoreProduct, price: e.target.value })}
+                                        placeholder="Ej: $1,295"
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Peso (Lbs)</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        value={newStoreProduct.weight}
+                                        onChange={(e) => setNewStoreProduct({ ...newStoreProduct, weight: e.target.value })}
+                                        placeholder="Ej: 1.2"
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    />
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <label className="block text-sm text-stone-400 mb-2">Categoría</label>
+                                    <select
+                                        value={newStoreProduct.category}
+                                        onChange={(e) => setNewStoreProduct({ ...newStoreProduct, category: e.target.value })}
+                                        required
+                                        className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
+                                    >
+                                        {categoriasTienda.map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
 
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Nombre</label>
-                                <input
-                                    type="text"
-                                    value={newStoreProduct.name}
-                                    onChange={(e) => setNewStoreProduct({ ...newStoreProduct, name: e.target.value })}
-                                    placeholder="Ej: Zapatos Louboutin"
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
+                            <button
+                                type="submit"
+                                disabled={uploadingStore}
+                                className="mt-4 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold rounded hover:from-amber-500 hover:to-amber-600 transition-all disabled:opacity-50 flex items-center gap-2"
+                            >
+                                <Upload size={18} />
+                                {uploadingStore ? 'Subiendo...' : 'Publicar Producto'}
+                            </button>
+                        </form>
 
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Precio</label>
-                                <input
-                                    type="text"
-                                    value={newStoreProduct.price}
-                                    onChange={(e) => setNewStoreProduct({ ...newStoreProduct, price: e.target.value })}
-                                    placeholder="Ej: $1,295"
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
+                        {/* Galería */}
+                        <div>
+                            <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
+                                <ShoppingBag size={20} />
+                                Productos en Tienda ({storeProducts.length})
+                            </h3>
 
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Peso (Lbs)</label>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    value={newStoreProduct.weight}
-                                    onChange={(e) => setNewStoreProduct({ ...newStoreProduct, weight: e.target.value })}
-                                    placeholder="Ej: 1.2"
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                />
-                            </div>
+                            {storeProducts.length === 0 ? (
+                                <div className="text-center py-12 text-stone-400">
+                                    <ShoppingBag size={48} className="mx-auto mb-4 opacity-50" />
+                                    <p>No hay productos en la tienda</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                    {storeProducts.map((product) => (
+                                        <div key={product.id} className="bg-white/5 border border-white/10 rounded-lg overflow-hidden group">
+                                            <div className="aspect-[3/4] relative">
+                                                <img
+                                                    src={product.imageUrl}
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                                {/* Badge de Fuente */}
+                                                {product.source === 'fb' && (
+                                                    <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm z-10"> FB </div>
+                                                )}
+                                                {product.source === 'w' && (
+                                                    <div className="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm z-10"> W </div>
+                                                )}
 
-                            <div className="md:col-span-1">
-                                <label className="block text-sm text-stone-400 mb-2">Categoría</label>
-                                <select
-                                    value={newStoreProduct.category}
-                                    onChange={(e) => setNewStoreProduct({ ...newStoreProduct, category: e.target.value })}
-                                    required
-                                    className="w-full px-4 py-2 bg-stone-900 border border-stone-700 rounded text-stone-300 focus:outline-none focus:border-amber-600"
-                                >
-                                    {categoriasTienda.map(cat => (
-                                        <option key={cat} value={cat}>{cat}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={uploadingStore}
-                            className="mt-4 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-semibold rounded hover:from-amber-500 hover:to-amber-600 transition-all disabled:opacity-50 flex items-center gap-2"
-                        >
-                            <Upload size={18} />
-                            {uploadingStore ? 'Subiendo...' : 'Publicar Producto'}
-                        </button>
-                    </form>
-
-                    {/* Galería */}
-                    <div>
-                        <h3 className="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
-                            <ShoppingBag size={20} />
-                            Productos en Tienda ({storeProducts.length})
-                        </h3>
-
-                        {storeProducts.length === 0 ? (
-                            <div className="text-center py-12 text-stone-400">
-                                <ShoppingBag size={48} className="mx-auto mb-4 opacity-50" />
-                                <p>No hay productos en la tienda</p>
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                {storeProducts.map((product) => (
-                                    <div key={product.id} className="bg-white/5 border border-white/10 rounded-lg overflow-hidden group">
-                                        <div className="aspect-[3/4] relative">
-                                            <img
-                                                src={product.imageUrl}
-                                                alt={product.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            {/* Badge de Fuente */}
-                                            {product.source === 'fb' && (
-                                                <div className="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm z-10"> FB </div>
-                                            )}
-                                            {product.source === 'w' && (
-                                                <div className="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm z-10"> W </div>
-                                            )}
-
-                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                <button
-                                                    onClick={() => deleteStoreProduct(product.id)}
-                                                    className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full transition-colors"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
+                                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <button
+                                                        onClick={() => deleteStoreProduct(product.id)}
+                                                        className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full transition-colors"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="p-3">
+                                                <p className="text-sm font-semibold text-amber-100 truncate">{product.name}</p>
+                                                <p className="text-sm text-amber-400 mb-1">{product.price}</p>
+                                                <span className="text-[10px] uppercase tracking-wider bg-amber-600/20 text-amber-400 px-2 py-1 rounded-full">
+                                                    {product.category}
+                                                </span>
                                             </div>
                                         </div>
-                                        <div className="p-3">
-                                            <p className="text-sm font-semibold text-amber-100 truncate">{product.name}</p>
-                                            <p className="text-sm text-amber-400 mb-1">{product.price}</p>
-                                            <span className="text-[10px] uppercase tracking-wider bg-amber-600/20 text-amber-400 px-2 py-1 rounded-full">
-                                                {product.category}
-                                            </span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
             {/* VISTA: Importación Masiva */}
 
             {/* VISTA: Pedidos Online */}
-            {subTab === 'pedidos' && (
-                <div className="bg-white/5 border border-white/10 rounded-lg p-8">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-serif text-amber-100">Pedidos de la Web</h2>
-                        <button
-                            onClick={cargarDatos}
-                            className="flex items-center gap-2 px-4 py-2 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded border border-stone-600 transition-colors text-sm"
-                        >
-                            <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                            Actualizar
-                        </button>
-                    </div>
-
-                    <div className="space-y-4">
-                        {onlineOrders.length === 0 ? (
-                            <p className="text-stone-400">No hay pedidos registrados.</p>
-                        ) : (
-                            onlineOrders.map(order => (
-                                <div key={order.id} className="bg-stone-900 border border-stone-800 rounded-lg p-6 flex flex-col md:flex-row justify-between gap-6">
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <span className={`px-2 py-1 text-[10px] uppercase font-bold tracking-wider rounded ${order.status === 'paid' ? 'bg-green-900 text-green-400' :
-                                                order.status === 'cancelled' ? 'bg-red-900 text-red-400' :
-                                                    'bg-amber-900 text-amber-400'
-                                                }`}>
-                                                {order.status === 'paid' ? 'PAGADO' :
-                                                    order.status === 'cancelled' ? 'CANCELADO' : 'PENDIENTE'}
-                                            </span>
-                                            <span className="text-stone-500 text-xs">
-                                                {order.createdAt?.seconds ? new Date(order.createdAt.seconds * 1000).toLocaleString() : 'Fecha desc.'}
-                                            </span>
-                                        </div>
-                                        <h3 className="text-amber-100 font-bold text-lg mb-1">{order.nombre}</h3>
-                                        <p className="text-stone-400 text-sm mb-2">{order.telefono}</p>
-
-                                        <div className="mt-4 bg-black/20 p-3 rounded">
-                                            {order.items?.map((item, idx) => (
-                                                <div key={idx} className="flex justify-between text-sm text-stone-300 mb-1 border-b border-white/5 pb-1 last:border-0 last:pb-0">
-                                                    <span>{item.quantity}x {item.name}</span>
-                                                    <span>${item.price}</span>
-                                                </div>
-                                            ))}
-                                            <div className="flex justify-between text-amber-500 font-bold mt-2 pt-2 border-t border-white/10">
-                                                <span>Total</span>
-                                                <span>${order.total}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-col gap-2 justify-center border-l border-white/5 pl-6">
-                                        {order.status !== 'cancelled' && (
-                                            <>
-                                                {order.status !== 'paid' && (
-                                                    <button
-                                                        onClick={() => handleOrderStatus(order.id, 'paid', order)}
-                                                        className="px-4 py-2 bg-green-700/20 text-green-400 border border-green-700/50 rounded hover:bg-green-700/40 transition-colors text-sm font-bold"
-                                                    >
-                                                        CONFIRMAR PAGO
-                                                    </button>
-                                                )}
-                                                <button
-                                                    onClick={() => handleOrderStatus(order.id, 'cancelled', order)}
-                                                    className="px-4 py-2 bg-red-700/20 text-red-400 border border-red-700/50 rounded hover:bg-red-700/40 transition-colors text-sm font-bold"
-                                                >
-                                                    CANCELAR Y DEVOLVER
-                                                </button>
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                </div>
-            )}
-
-            {/* VISTA: Configuración */}
-            {subTab === 'settings' && (
-                <div className="bg-white/5 border border-white/10 rounded-lg p-8">
-                    <h2 className="text-2xl font-serif text-amber-100 mb-6">Configuración del Sitio</h2>
-
-                    <form onSubmit={handleSaveSettings} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* Banco Pichincha */}
-                        <div className="space-y-4 bg-white/5 p-6 rounded-xl border border-white/5">
-                            <h3 className="text-lg font-semibold text-amber-400 border-b border-amber-600/30 pb-2 mb-4 flex items-center gap-2">
-                                <Database size={20} /> Datos Bancarios
-                            </h3>
-                            <div>
-                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Nombre de la Cuenta</label>
-                                <input
-                                    type="text"
-                                    value={settings.bank.name}
-                                    onChange={(e) => setSettings({ ...settings, bank: { ...settings.bank, name: e.target.value } })}
-                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
-                                    placeholder="Ej: Georgina Shopper"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Número de Cuenta</label>
-                                <input
-                                    type="text"
-                                    value={settings.bank.accountNumber}
-                                    onChange={(e) => setSettings({ ...settings, bank: { ...settings.bank, accountNumber: e.target.value } })}
-                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
-                                    placeholder="0000000000"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Tipo de Cuenta</label>
-                                <select
-                                    value={settings.bank.accountType}
-                                    onChange={(e) => setSettings({ ...settings, bank: { ...settings.bank, accountType: e.target.value } })}
-                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
-                                >
-                                    <option value="Ahorros">Ahorros</option>
-                                    <option value="Corriente">Corriente</option>
-                                </select>
-                            </div>
-                            <p className="text-xs text-stone-500 italic">Banco configurado: {settings.bank.bankName}</p>
-                        </div>
-
-                        {/* Redes Sociales */}
-                        <div className="space-y-4 bg-white/5 p-6 rounded-xl border border-white/5">
-                            <h3 className="text-lg font-semibold text-amber-400 border-b border-amber-600/30 pb-2 mb-4 flex items-center gap-2">
-                                <ExternalLink size={20} /> Redes Sociales (Links)
-                            </h3>
-                            <div>
-                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Instagram (URL)</label>
-                                <input
-                                    type="text"
-                                    value={settings.social.instagram}
-                                    onChange={(e) => setSettings({ ...settings, social: { ...settings.social, instagram: e.target.value } })}
-                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">TikTok (URL)</label>
-                                <input
-                                    type="text"
-                                    value={settings.social.tiktok}
-                                    onChange={(e) => setSettings({ ...settings, social: { ...settings.social, tiktok: e.target.value } })}
-                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Facebook (URL)</label>
-                                <input
-                                    type="text"
-                                    value={settings.social.facebook}
-                                    onChange={(e) => setSettings({ ...settings, social: { ...settings.social, facebook: e.target.value } })}
-                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-stone-400 uppercase mb-2">WhatsApp (Número sin +)</label>
-                                <input
-                                    type="text"
-                                    value={settings.social.whatsapp}
-                                    onChange={(e) => setSettings({ ...settings, social: { ...settings.social, whatsapp: e.target.value } })}
-                                    className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
-                                    placeholder="15513019412"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="md:col-span-2 flex justify-end">
+            {
+                subTab === 'pedidos' && (
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-serif text-amber-100">Pedidos de la Web</h2>
                             <button
-                                type="submit"
-                                disabled={savingSettings}
-                                className="px-8 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-bold rounded hover:from-amber-500 hover:to-amber-600 transition-all flex items-center gap-2 shadow-lg disabled:opacity-50"
+                                onClick={cargarDatos}
+                                className="flex items-center gap-2 px-4 py-2 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded border border-stone-600 transition-colors text-sm"
                             >
-                                {savingSettings ? "Guardando..." : "Guardar Configuración"}
-                                <CheckCircle size={18} />
+                                <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                                Actualizar
                             </button>
                         </div>
-                    </form>
-                </div>
-            )}
-        </div>
+
+                        <div className="space-y-4">
+                            {onlineOrders.length === 0 ? (
+                                <p className="text-stone-400">No hay pedidos registrados.</p>
+                            ) : (
+                                onlineOrders.map(order => (
+                                    <div key={order.id} className="bg-stone-900 border border-stone-800 rounded-lg p-6 flex flex-col md:flex-row justify-between gap-6">
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <span className={`px-2 py-1 text-[10px] uppercase font-bold tracking-wider rounded ${order.status === 'paid' ? 'bg-green-900 text-green-400' :
+                                                    order.status === 'cancelled' ? 'bg-red-900 text-red-400' :
+                                                        'bg-amber-900 text-amber-400'
+                                                    }`}>
+                                                    {order.status === 'paid' ? 'PAGADO' :
+                                                        order.status === 'cancelled' ? 'CANCELADO' : 'PENDIENTE'}
+                                                </span>
+                                                <span className="text-stone-500 text-xs">
+                                                    {order.createdAt?.seconds ? new Date(order.createdAt.seconds * 1000).toLocaleString() : 'Fecha desc.'}
+                                                </span>
+                                            </div>
+                                            <h3 className="text-amber-100 font-bold text-lg mb-1">{order.nombre}</h3>
+                                            <p className="text-stone-400 text-sm mb-2">{order.telefono}</p>
+
+                                            <div className="mt-4 bg-black/20 p-3 rounded">
+                                                {order.items?.map((item, idx) => (
+                                                    <div key={idx} className="flex justify-between text-sm text-stone-300 mb-1 border-b border-white/5 pb-1 last:border-0 last:pb-0">
+                                                        <span>{item.quantity}x {item.name}</span>
+                                                        <span>${item.price}</span>
+                                                    </div>
+                                                ))}
+                                                <div className="flex justify-between text-amber-500 font-bold mt-2 pt-2 border-t border-white/10">
+                                                    <span>Total</span>
+                                                    <span>${order.total}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col gap-2 justify-center border-l border-white/5 pl-6">
+                                            {order.status !== 'cancelled' && (
+                                                <>
+                                                    {order.status !== 'paid' && (
+                                                        <button
+                                                            onClick={() => handleOrderStatus(order.id, 'paid', order)}
+                                                            className="px-4 py-2 bg-green-700/20 text-green-400 border border-green-700/50 rounded hover:bg-green-700/40 transition-colors text-sm font-bold"
+                                                        >
+                                                            CONFIRMAR PAGO
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        onClick={() => handleOrderStatus(order.id, 'cancelled', order)}
+                                                        className="px-4 py-2 bg-red-700/20 text-red-400 border border-red-700/50 rounded hover:bg-red-700/40 transition-colors text-sm font-bold"
+                                                    >
+                                                        CANCELAR Y DEVOLVER
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                )
+            }
+
+            {/* VISTA: Configuración */}
+            {
+                subTab === 'settings' && (
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                        <h2 className="text-2xl font-serif text-amber-100 mb-6">Configuración del Sitio</h2>
+
+                        <form onSubmit={handleSaveSettings} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Banco Pichincha */}
+                            <div className="space-y-4 bg-white/5 p-6 rounded-xl border border-white/5">
+                                <h3 className="text-lg font-semibold text-amber-400 border-b border-amber-600/30 pb-2 mb-4 flex items-center gap-2">
+                                    <Database size={20} /> Datos Bancarios
+                                </h3>
+                                <div>
+                                    <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Nombre de la Cuenta</label>
+                                    <input
+                                        type="text"
+                                        value={settings.bank.name}
+                                        onChange={(e) => setSettings({ ...settings, bank: { ...settings.bank, name: e.target.value } })}
+                                        className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                        placeholder="Ej: Georgina Shopper"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Número de Cuenta</label>
+                                    <input
+                                        type="text"
+                                        value={settings.bank.accountNumber}
+                                        onChange={(e) => setSettings({ ...settings, bank: { ...settings.bank, accountNumber: e.target.value } })}
+                                        className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                        placeholder="0000000000"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Tipo de Cuenta</label>
+                                    <select
+                                        value={settings.bank.accountType}
+                                        onChange={(e) => setSettings({ ...settings, bank: { ...settings.bank, accountType: e.target.value } })}
+                                        className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                    >
+                                        <option value="Ahorros">Ahorros</option>
+                                        <option value="Corriente">Corriente</option>
+                                    </select>
+                                </div>
+                                <p className="text-xs text-stone-500 italic">Banco configurado: {settings.bank.bankName}</p>
+                            </div>
+
+                            {/* Redes Sociales */}
+                            <div className="space-y-4 bg-white/5 p-6 rounded-xl border border-white/5">
+                                <h3 className="text-lg font-semibold text-amber-400 border-b border-amber-600/30 pb-2 mb-4 flex items-center gap-2">
+                                    <ExternalLink size={20} /> Redes Sociales (Links)
+                                </h3>
+                                <div>
+                                    <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Instagram (URL)</label>
+                                    <input
+                                        type="text"
+                                        value={settings.social.instagram}
+                                        onChange={(e) => setSettings({ ...settings, social: { ...settings.social, instagram: e.target.value } })}
+                                        className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-stone-400 uppercase mb-2">TikTok (URL)</label>
+                                    <input
+                                        type="text"
+                                        value={settings.social.tiktok}
+                                        onChange={(e) => setSettings({ ...settings, social: { ...settings.social, tiktok: e.target.value } })}
+                                        className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-stone-400 uppercase mb-2">Facebook (URL)</label>
+                                    <input
+                                        type="text"
+                                        value={settings.social.facebook}
+                                        onChange={(e) => setSettings({ ...settings, social: { ...settings.social, facebook: e.target.value } })}
+                                        className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-stone-400 uppercase mb-2">WhatsApp (Número sin +)</label>
+                                    <input
+                                        type="text"
+                                        value={settings.social.whatsapp}
+                                        onChange={(e) => setSettings({ ...settings, social: { ...settings.social, whatsapp: e.target.value } })}
+                                        className="w-full bg-stone-900 border border-stone-800 rounded px-4 py-2 text-white focus:border-amber-600 outline-none"
+                                        placeholder="15513019412"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="md:col-span-2 flex justify-end">
+                                <button
+                                    type="submit"
+                                    disabled={savingSettings}
+                                    className="px-8 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-stone-950 font-bold rounded hover:from-amber-500 hover:to-amber-600 transition-all flex items-center gap-2 shadow-lg disabled:opacity-50"
+                                >
+                                    {savingSettings ? "Guardando..." : "Guardar Configuración"}
+                                    <CheckCircle size={18} />
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                )
+            }
+        </div >
     );
 }
