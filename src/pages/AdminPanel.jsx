@@ -728,7 +728,7 @@ export default function AdminPanel() {
             </nav>
 
             {/* Main Content - Full Width Mobile */}
-            <div className="px-4 md:px-6 py-6 md:py-12">
+            <div className="px-3 md:px-6 py-4 md:py-12">
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 gap-4">
                     <div>
                         <h1 className="text-2xl md:text-4xl font-serif text-amber-100 mb-1 md:mb-2">Panel de Administración</h1>
@@ -736,7 +736,7 @@ export default function AdminPanel() {
                     </div>
 
                     {/* Tabs Admin - Horizontal Scroll Mobile */}
-                    <div className="flex overflow-x-auto scrollbar-none bg-stone-900 p-1 rounded-lg border border-stone-800 gap-1 -mx-4 px-4 md:mx-0 md:px-0">
+                    <div className="flex overflow-x-auto scrollbar-none bg-stone-900 p-1 rounded-lg border border-stone-800 gap-1 -mx-3 px-3 md:mx-0 md:px-0">
                         <button
                             onClick={() => setSubTab('fechas')}
                             className={`flex-shrink-0 px-4 md:px-6 py-2 rounded-md text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${subTab === 'fechas' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
@@ -784,7 +784,7 @@ export default function AdminPanel() {
 
                 {/* VISTA: Gestión de Fechas */}
                 {subTab === 'fechas' && (
-                    <div className="bg-white/5 border-x-0 md:border-x border-white/10 md:rounded-lg p-4 md:p-8">
+                    <div className="bg-white/5 border-x-0 md:border-x border-white/10 md:rounded-lg p-3 md:p-8">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 md:mb-6 gap-3">
                             <h2 className="text-xl md:text-2xl font-serif text-amber-100">Fechas Configuradas</h2>
                             <button
@@ -851,7 +851,7 @@ export default function AdminPanel() {
 
                 {/* VISTA: Citas Agendadas */}
                 {subTab === 'citas' && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 md:p-8">
                         <h2 className="text-2xl font-serif text-amber-100 mb-6">Citas de Clientes</h2>
 
                         <div className="space-y-3">
@@ -1131,7 +1131,7 @@ export default function AdminPanel() {
             {/* VISTA: Gestión de Carrusel */}
             {
                 subTab === 'carrusel' && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 md:p-8">
                         <h2 className="text-2xl font-serif text-amber-100 mb-6">Gestión de Carrusel</h2>
 
                         {/* Formulario para subir nueva imagen */}
@@ -1235,7 +1235,7 @@ export default function AdminPanel() {
             {/* VISTA: Gestión de Destacados (Featured) */}
             {
                 subTab === 'featured' && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 md:p-8">
                         <h2 className="text-2xl font-serif text-amber-100 mb-6">Gestión de Productos Destacados</h2>
 
                         {/* Formulario para subir nuevo producto destacado */}
@@ -1367,7 +1367,7 @@ export default function AdminPanel() {
             {/* VISTA: Gestión de Tienda Online (Nuestra Colección) */}
             {
                 subTab === 'tienda' && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 md:p-8">
                         <h2 className="text-2xl font-serif text-amber-100 mb-6">Gestión de Tienda (Nuestra Colección)</h2>
 
                         {/* Formulario */}
@@ -1510,7 +1510,7 @@ export default function AdminPanel() {
             {/* VISTA: Pedidos Online */}
             {
                 subTab === 'pedidos' && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 md:p-8">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-serif text-amber-100">Pedidos de la Web</h2>
                             <button
@@ -1589,7 +1589,7 @@ export default function AdminPanel() {
             {/* VISTA: Configuración */}
             {
                 subTab === 'settings' && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-8">
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 md:p-8">
                         <h2 className="text-2xl font-serif text-amber-100 mb-6">Configuración del Sitio</h2>
 
                         <form onSubmit={handleSaveSettings} className="grid grid-cols-1 md:grid-cols-2 gap-8">

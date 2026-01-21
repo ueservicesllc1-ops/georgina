@@ -4,20 +4,22 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Reset Global */
 html {
+  /* Fondo oscuro por defecto para evitar bordes blancos al hacer overscroll en móviles */
+  @apply bg-stone-950;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }
 
 body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   overflow-x: hidden;
+  /* Vital para evitar scroll horizontal indeseado */
+  width: 100%;
 }
 
 h1,
@@ -31,7 +33,9 @@ h6 {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  /* Más delgado para móvil */
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -39,7 +43,7 @@ h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-amber-600 rounded;
+  @apply bg-amber-600 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -58,5 +62,11 @@ h6 {
 
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Utilidad para tocar mejor en móvil */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
   }
 }

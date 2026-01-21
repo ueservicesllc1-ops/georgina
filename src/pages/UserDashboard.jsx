@@ -297,7 +297,7 @@ export default function UserDashboard() {
             </nav>
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
+            <div className="max-w-7xl mx-auto px-3 md:px-6 py-4 md:py-12">
                 <h1 className="text-4xl font-serif text-amber-100 mb-8">Mi Dashboard</h1>
 
                 {/* Tabs */}
