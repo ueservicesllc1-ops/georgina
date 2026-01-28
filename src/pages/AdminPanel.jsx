@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, storage } from '../firebase';
-import { inventoryDb } from '../firebaseInventory';
+import { inventoryDb, inventoryAuth } from '../firebaseInventory';
+import { signInAnonymously } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, getDocs, query, orderBy, setDoc, where, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -88,9 +89,21 @@ export default function AdminPanel() {
     ];
 
     useEffect(() => {
-        if (authorized) {
-            cargarDatos();
-        }
+        const initData = async () => {
+            if (authorized) {
+                // Autenticación anónima para Inventory DB para evitar errores de permisos
+                if (inventoryAuth && !inventoryAuth.currentUser) {
+                    try {
+                        await signInAnonymously(inventoryAuth);
+                        console.log('🔐 Auth Anónima Inventario: OK');
+                    } catch (error) {
+                        console.error('❌ Error Auth Anónima:', error);
+                    }
+                }
+                cargarDatos();
+            }
+        };
+        initData();
     }, [authorized]);
 
     const handlePinSubmit = (e) => {
@@ -505,17 +518,38 @@ export default function AdminPanel() {
             await uploadBytes(imageRef, newFeaturedProduct.file);
             const imageUrl = await getDownloadURL(imageRef);
 
-            // Guardar en Firestore
-            await addDoc(collection(db, 'featured_products'), {
-                imageUrl, // Nota: Home.jsx espera 'image' pero usaremos 'imageUrl' y adaptaremos Home.jsx o mapearemos
-                name: newFeaturedProduct.name,
-                price: newFeaturedProduct.price,
-                category: newFeaturedProduct.category,
-                weight: newFeaturedProduct.weight || '0', // Guardar peso
+            // 1. Guardar en Inventario (Inventory DB) para que sea "comprable"
+            // Se usa addDoc para generar un ID único
+            const inventoryDocRef = await addDoc(collection(inventoryDb, 'inventory'), {
+                product: {
+                    imageUrl,
+                    name: newFeaturedProduct.name,
+                    salePrice1: parseFloat(newFeaturedProduct.price),
+                    category: newFeaturedProduct.category,
+                    weight: parseFloat(newFeaturedProduct.weight || '0'),
+                    quantity: 1, // Default a 1 para permitir compra inmediata
+                    status: 'stock',
+                    createdAt: new Date()
+                },
+                quantity: 1,
+                status: 'stock',
                 createdAt: new Date()
             });
 
-            alert('Producto destacado subido exitosamente');
+            const newId = inventoryDocRef.id;
+
+            // 2. Guardar en Featured Products (Georgina DB) usando el MISMO ID
+            // Esto asegura que Home.jsx pase este ID al carrito, y CartContext lo encuentre en Inventory DB
+            await setDoc(doc(db, 'featured_products', newId), {
+                imageUrl,
+                name: newFeaturedProduct.name,
+                price: newFeaturedProduct.price,
+                category: newFeaturedProduct.category,
+                weight: newFeaturedProduct.weight || '0',
+                createdAt: new Date()
+            });
+
+            alert('Producto destacado subido exitosamente y añadido al inventario');
             setNewFeaturedProduct({ file: null, name: '', price: '', category: '', weight: '' });
             document.getElementById('featured-file-input').value = '';
             cargarDatos();
@@ -774,7 +808,7 @@ export default function AdminPanel() {
                             Pedidos Online
                         </button>
                         <button
-                            onClick={() => setSubTab('configuracion')}
+                            onClick={() => setSubTab('settings')}
                             className={`flex-shrink-0 px-4 md:px-6 py-2 rounded-md text-xs md:text-sm font-semibold transition-all whitespace-nowrap ${subTab === 'configuracion' ? 'bg-amber-600 text-stone-950' : 'text-stone-400 hover:text-amber-100'}`}
                         >
                             Config
